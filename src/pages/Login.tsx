@@ -42,11 +42,16 @@ const Login = () => {
               {...register("email")}
               type="email"
               placeholder="Email*"
+              error={errors.email}
             />
+            {/* {errors.email && (
+            <InputErrorMessage message={errors.email.message} />
+          )} */}
             <CustomInput
               {...register("password")}
               type="password"
               placeholder="Password*"
+              error={errors.password}
             />
             <button
               type="submit"
