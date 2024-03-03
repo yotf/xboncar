@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="mt-6 grid grid-cols-3 gap-3 justify-between w-72  m-auto mb mb-10 z-10">
+    <div className="mt-6 grid grid-cols-3 gap-3 justify-between w-72  m-auto  mb-10 z-10  ">
       <div className="text-sm text-center">
         <a href="#" className="font-medium text-gray-600 hover:text-gray-500">
           Terms

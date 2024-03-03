@@ -29,7 +29,7 @@ const Login = () => {
 
   return (
     <>
-      <div className=" w-full md:w-1/2 h-full flex flex-col justify-center items-center  flex-grow self-center z-10">
+      <div className=" w-full md:w-1/2 h-full flex flex-col justify-center items-center  flex-grow self-center z-10 max-[1427px]:    py-48 px-10 ">
         <div className="max-w-md w-full">
           <h2 className="mb-6 text-4xl font-bold text-gray-700">
             Login to account
@@ -66,9 +66,9 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <div className="w-1/2 " />
+      <div className="w-1/2 max-[846px]:hidden" />
 
-      <div className="absolute bg-right z-0  inset-x-0  bottom-0 right-0  bg-[url(carbon-bg.png)] bg-no-repeat  h-[calc(100%-100px)]  bg-contain transform translate-x-[15%] "></div>
+      <div className="max-[846px]:hidden absolute bg-right z-0  inset-x-0  bottom-0 right-0  max-[1512px]:bg-[url(carbon-bg.png)]  bg-[url(carbon-bg-full.png)] bg-no-repeat  h-[calc(100%-100px)]  bg-contain max-[920px]:bg-cover  "></div>
     </>
   );
   // <div className="flex">
