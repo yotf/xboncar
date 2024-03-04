@@ -12,18 +12,18 @@ interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
   ({ className, error, ...rest }, ref) => {
     return (
-      <>
+      <div className={`${className || ""}`}>
         <input
           ref={ref}
           className={`mt-1 block w-full rounded-md ${
             error
               ? "border-red-500 focus:ring-red-400 focus:border-red-500"
               : "border-gray-300 focus:border-carbonx-green  focus:ring-carbonx-khaki"
-          } shadow-sm  focus:ring focus:ring-opacity-20 ${className || ""}`}
+          } shadow-sm  focus:ring focus:ring-opacity-20 `}
           {...rest}
         />
         {error && <InputErrorMessage message={error.message} />}
-      </>
+      </div>
     );
   }
 );
