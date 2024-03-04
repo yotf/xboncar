@@ -39,6 +39,7 @@ const Login = () => {
           type="email"
           placeholder="Email*"
           error={errors.email}
+          id="email"
         />
         {/* {errors.email && (
             <InputErrorMessage message={errors.email.message} />
@@ -48,6 +49,7 @@ const Login = () => {
           type="password"
           placeholder="Password*"
           error={errors.password}
+          id="password"
         />
         <PrimaryButton disabled={isSubmitting} type="submit">
           {isSubmitting ? "Loading..." : "Next"}
