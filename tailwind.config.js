@@ -9,7 +9,8 @@ export default {
       colors: {
         'carbonx-green': "#C1F48F",
         "carbonx-dark-green": "#18AA00",
-        'carbonx-khaki': "#93A768"
+        'carbonx-khaki': "#93A768",
+        'carbonx-light-green': "#dbf4be",
       },
       fontFamily: {
         'inter': ['Inter', 'sans-serif'],
