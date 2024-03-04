@@ -77,7 +77,7 @@ const ProjectsPage: React.FC = () => {
     <div className="rounded-xl border w-[90%] max-w-[1333px]  m-auto">
       <div className="flex justify-between items-center p-8">
         <h1 className="text-2xl font-bold">Current Projects</h1>
-        <PrimaryButton className=" w-44">
+        <PrimaryButton className=" w-40">
           <AddOutline /> New Project
         </PrimaryButton>
         {/* <button className="bg-carbonx-green text-white px-4 py-2 rounded-md">
