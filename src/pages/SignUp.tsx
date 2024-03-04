@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+
+import CustomCheckbox from "../components/atoms/CustomCheckbox";
 import CustomInput from "../components/atoms/CustomInput";
-import InputErrorMessage from "../components/atoms/InputErrorMessage";
 import PrimaryButton from "../components/atoms/PrimaryButton";
 import LandingPageLayout from "./LandingPageLayout";
 
@@ -35,8 +37,10 @@ const SignUp = () => {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
+  const { termsAndConditions } = watch();
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     console.log(data);
     try {
@@ -46,6 +50,7 @@ const SignUp = () => {
       setError("root", { message: "Could not create user" }); //TODO: Get error message from server
     }
   };
+
 
   return (
     <LandingPageLayout
@@ -61,24 +66,28 @@ const SignUp = () => {
           type="text"
           placeholder="First Name*"
           error={errors.firstName}
+          id="firstName"
         />
         <CustomInput
           {...register("lastName")}
           type="text"
           placeholder="Last Name*"
           error={errors.lastName}
+          id="lastName"
         />
         <CustomInput
           {...register("organization")}
           type="text"
           placeholder="Organization*"
           error={errors.organization}
+          id="organization"
         />
         <CustomInput
           {...register("phoneNumber")}
           type="text"
           placeholder="Phone Number*"
           error={errors.phoneNumber}
+          id="phoneNumber"
         />
         <CustomInput
           {...register("email")}
@@ -86,43 +95,41 @@ const SignUp = () => {
           placeholder="Email*"
           error={errors.email}
           className="col-span-2"
+          id="email"
         />
         <CustomInput
           {...register("password")}
           type="password"
           placeholder="Password*"
           error={errors.password}
+          id="password"
         />
         <CustomInput
           {...register("passwordConfirmation")}
           type="password"
           placeholder="Confirm Password*"
           error={errors.passwordConfirmation}
+          id="passwordConfirmation"
         />
-        <div className="flex items-center col-span-2">
-          <input
-            {...register("termsAndConditions")}
-            type="checkbox"
-            className="checkbox checkbox-primary"
-            //className="rounded border-gray-300 text-carbonx-green focus:ring focus:ring-carbonx-khaki focus:ring-opacity-20"
-          />
-          <label htmlFor="termsAndConditions" className="ml-2">
-            I agree to the terms and conditions
-          </label>
-        </div>
+        <CustomCheckbox
+          {...register("termsAndConditions")}
+          label="I have read, understood and agree to the terms and conditions*"
+          id="termsAndConditions"
+        />
         <PrimaryButton
-          disabled={isSubmitting}
+          disabled={isSubmitting || !termsAndConditions}
           type="submit"
           className="col-span-2"
         >
           {isSubmitting ? "Loading..." : "Next"}
         </PrimaryButton>
 
-        {errors.root && <InputErrorMessage message={errors.root.message} />}
+        {/* {errors.root && <Alert message={errors.root.message!} />} */}
       </form>
       <div className="text-center mt-6">
         <a href="/login" className="">
-          Already have an account? Login
+          Already have an account?{" "}
+          <span className="text-carbonx-dark-green font-bold">Login</span>
         </a>
       </div>
     </LandingPageLayout>
