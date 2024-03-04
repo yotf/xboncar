@@ -1,0 +1,16 @@
+.ag-theme-quartz {
+    
+}
+.ag-header{
+    background-color: transparent;
+}
+.ag-root-wrapper{
+    border:none;
+}
+
+.ag-header-cell-label {
+justify-content: center;
+}
+.ag-cell-content {
+    text-align: center;
+}

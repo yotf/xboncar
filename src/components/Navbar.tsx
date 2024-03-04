@@ -16,6 +16,12 @@ const Navbar = () => {
               Profile
             </Link>
             <Link
+              to="/projects"
+              className="text-black font-semibold hover:text-carbonx-khaki transition-all"
+            >
+              Projects
+            </Link>
+            <Link
               to="/contact"
               className="text-black font-semibold hover:text-carbonx-khaki transition-all"
             >

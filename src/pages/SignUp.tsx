@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -50,7 +49,6 @@ const SignUp = () => {
       setError("root", { message: "Could not create user" }); //TODO: Get error message from server
     }
   };
-
 
   return (
     <LandingPageLayout
