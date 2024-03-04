@@ -2,19 +2,17 @@ import React from "react";
 import { FieldError } from "react-hook-form";
 import InputErrorMessage from "./InputErrorMessage";
 
-interface CustomInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type CustomInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: FieldError;
-}
+};
 
 const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ className, error, ...rest }, ref) => {
+  ({ className, error, id, ...rest }, ref) => {
     return (
       <div className={`${className || ""}`}>
         <input
           ref={ref}
+          id={id}
           className={`mt-1 block w-full rounded-md ${
             error
               ? "border-red-500 focus:ring-red-400 focus:border-red-500"
