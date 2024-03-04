@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import CustomInput from "../components/atoms/CustomInput";
 import PrimaryButton from "../components/atoms/PrimaryButton";
@@ -56,12 +57,12 @@ const Login = () => {
         </PrimaryButton>
       </form>
       <div className="text-center mt-6">
-        <a href="/signup" className="">
+        <Link to="/signup">
           Not a member?{" "}
           <span className="text-bold text- text-carbonx-dark-green font-bold hover:text-carbonx-khaki transition-all">
             Sign up
           </span>
-        </a>
+        </Link>
       </div>
     </LandingPageLayout>
   );

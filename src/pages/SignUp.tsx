@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Link } from "react-router-dom";
 import CustomCheckbox from "../components/atoms/CustomCheckbox";
 import CustomInput from "../components/atoms/CustomInput";
 import PrimaryButton from "../components/atoms/PrimaryButton";
@@ -125,10 +126,10 @@ const SignUp = () => {
         {/* {errors.root && <Alert message={errors.root.message!} />} */}
       </form>
       <div className="text-center mt-6">
-        <a href="/login" className="">
+        <Link to="/login" className="">
           Already have an account?{" "}
           <span className="text-carbonx-dark-green font-bold">Login</span>
-        </a>
+        </Link>
       </div>
     </LandingPageLayout>
   );
