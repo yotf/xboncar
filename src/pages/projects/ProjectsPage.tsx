@@ -5,6 +5,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import React, { useState } from "react";
 import { AddOutline } from "react-ionicons";
+import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import "./projectsTableStyles.css";
 
@@ -72,12 +73,17 @@ const ProjectsPage: React.FC = () => {
     },
     // ... more data ...
   ]);
+  const navigate = useNavigate();
+
+  const onNewProjectClick = () => {
+    navigate("/");
+  };
 
   return (
     <div className="rounded-xl border w-[90%] max-w-[1333px]  m-auto">
       <div className="flex justify-between items-center p-8">
         <h1 className="text-2xl font-bold">Current Projects</h1>
-        <PrimaryButton className=" w-40">
+        <PrimaryButton className=" w-40" onClick={onNewProjectClick}>
           <AddOutline /> New Project
         </PrimaryButton>
         {/* <button className="bg-carbonx-green text-white px-4 py-2 rounded-md">
