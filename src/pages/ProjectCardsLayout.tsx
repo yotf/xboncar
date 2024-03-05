@@ -19,12 +19,13 @@ const ProjectCardsLayout: React.FC<ProjectCardsLayoutProps> = ({ cards }) => {
         <h1 className="text-4xl text-center font-bold m-10 mb-16">
           Choose your Project
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4   ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4    ">
           {cards.map((card, index) => (
             <Link
               to={card.url}
               key={index}
-              className="focus:outline-none  cursor-pointer bg-white hover:shadow-lg transition hover:scale-105 duration-300 ease-in-out hover:bg-gray-100  border-carbonx-green border-4 rounded-lg shadow-lg p-6 flex flex-col items-center text-center"
+              className="focus:outline-none max-w-[288px] cursor-pointer bg-white hover:shadow-lg transition hover:scale-105 duration-300 ease-in-out hover:bg-gray-100  border-carbonx-green border-4 rounded-lg shadow-lg p-6 flex flex-col items-center text-center"
+              state={{ fromChooseProjectPage: true }}
             >
               <img
                 src={card.icon}
