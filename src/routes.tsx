@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import RequireAuth from "./components/RequireAuth";
 import Root from "./components/Root";
 import ChooseYourProject from "./pages/ChooseYourProject";
 import ErrorPage from "./pages/ErrorPage";
@@ -14,7 +15,22 @@ export const router = createBrowserRouter([
     children: [
       { path: "profile", element: <div>Profile</div> },
       { path: "contact", element: <div>Contact</div> },
-      { path: "projects", element: <ProjectsPage /> },
+      {
+        path: "projects",
+        element: (
+          <RequireAuth>
+            <ProjectsPage />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "projects/switching-fossil-fuels",
+        element: (
+          <RequireAuth>
+            <div>Switching Fossil Fuels</div>
+          </RequireAuth>
+        ),
+      },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "/", element: <ChooseYourProject /> },
