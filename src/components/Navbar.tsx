@@ -1,6 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("userInfo") != null;
+
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/login");
+    // window.location.reload();
+  };
   return (
     <nav className="bg-carbonx-green">
       <div className=" mx-auto px-8">
@@ -9,12 +17,16 @@ const Navbar = () => {
             Carbon<span className="text-carbonx-khaki">X</span>
           </Link>
           <div className="flex items-center space-x-4 text-xl hover:text-carbonx-khaki">
-            <Link
-              to="/profile"
-              className="text-black font-semibold hover:text-carbonx-khaki transition-all"
-            >
-              Profile
-            </Link>
+            {isLoggedIn && (
+              <>
+                <Link
+                  to="/profile"
+                  className="text-black font-semibold hover:text-carbonx-khaki transition-all"
+                >
+                  Profile
+                </Link>
+              </>
+            )}
             <Link
               to="/projects"
               className="text-black font-semibold hover:text-carbonx-khaki transition-all"
@@ -27,12 +39,27 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            <Link
-              to="/login"
-              className="text-black font-semibold hover:text-carbonx-khaki transition-all"
-            >
-              Log In
-            </Link>
+            {isLoggedIn ? (
+              // <Link
+              //   to="/logout"
+              //   className="text-black font-semibold hover:text-carbonx-khaki transition-all"
+              // >
+              //   Logout
+              // </Link>
+              <button
+                onClick={handleLogout}
+                className="text-black font-semibold hover:text-carbonx-khaki transition-all"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="text-black font-semibold hover:text-carbonx-khaki transition-all"
+              >
+                Log In
+              </Link>
+            )}
           </div>
         </div>
       </div>
