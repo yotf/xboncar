@@ -1,12 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import CustomInput from "../components/atoms/CustomInput";
 import PrimaryButton from "../components/atoms/PrimaryButton";
+import { mockLogin } from "../services/mockServices";
 import LandingPageLayout from "./LandingPageLayout";
 
 const Login = () => {
+  const navigate = useNavigate();
   const schema = z.object({
     email: z.string().email(),
     password: z.string().min(8),
@@ -20,14 +24,24 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
 
+  const loginMutation = useMutation({
+    mutationFn: (data: FormFields) => mockLogin(data.email, data.password),
+    onSuccess: (data) => {
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      toast.success("Logged in successfully!", {
+        duration: 4000, // Display the toast for 4 seconds
+        position: "top-center", // Position it at the top
+      });
+      navigate("/");
+    },
+    onError: (error) => {
+      setError("root", { message: "The username or password is incorrect" });
+    },
+  });
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
-    try {
-      await new Promise((r) => setTimeout(r, 1000));
-      throw new Error();
-    } catch (error) {
-      setError("root", { message: "Email is not registered" });
-    }
+    loginMutation.mutate(data);
+    await new Promise((r) => setTimeout(r, 1000)); //TODO: Remove after connected to server
   };
   return (
     <LandingPageLayout
@@ -52,7 +66,7 @@ const Login = () => {
           error={errors.password}
           id="password"
         />
-        <PrimaryButton disabled={isSubmitting} type="submit">
+        <PrimaryButton disabled={isSubmitting} type="submit" className="w-full">
           {isSubmitting ? "Loading..." : "Next"}
         </PrimaryButton>
       </form>
