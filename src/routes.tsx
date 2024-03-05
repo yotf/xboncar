@@ -5,6 +5,7 @@ import ChooseYourProject from "./pages/ChooseYourProject";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import SwitchingFossilFuelsPurpose from "./pages/SwitchingFossilFuelsPurpose";
 import ProjectsPage from "./pages/projects/ProjectsPage";
 
 export const router = createBrowserRouter([
@@ -27,7 +28,7 @@ export const router = createBrowserRouter([
         path: "projects/switching-fossil-fuels",
         element: (
           <RequireAuth>
-            <div>Switching Fossil Fuels</div>
+            <SwitchingFossilFuelsPurpose />
           </RequireAuth>
         ),
       },

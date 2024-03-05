@@ -9,17 +9,21 @@ export type Cards = {
 };
 type ProjectCardsLayoutProps = {
   cards: Cards[];
+  title: string;
 };
 
-const ProjectCardsLayout: React.FC<ProjectCardsLayoutProps> = ({ cards }) => {
+const ProjectCardsLayout: React.FC<ProjectCardsLayoutProps> = ({
+  cards,
+  title,
+}) => {
   return (
     <>
       <div className="absolute top-[100px] bottom-0 left-0 w-full h-1/2  bg-carbonx-green" />
-      <div className="container mx-auto px-4 py-10 z-10">
-        <h1 className="text-4xl text-center font-bold m-10 mb-16">
-          Choose your Project
-        </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4    ">
+      <div className="container mx-auto px-4 py-10 z-10 max-w-[1280px]">
+        <h1 className="text-4xl text-center font-bold m-10 mb-16">{title}</h1>
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${cards.length} gap-4 justify-items-center  `}
+        >
           {cards.map((card, index) => (
             <Link
               to={card.url}

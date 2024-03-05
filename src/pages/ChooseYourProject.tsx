@@ -1,14 +1,13 @@
 import ProjectCardsLayout, { Cards } from "./ProjectCardsLayout";
 
 const ChooseYourProject = () => {
-
   const projects: Cards[] = [
     {
       title: "Switching Fossil Fuels",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis est in vulputate eu ullamcorper faucibus.",
-      icon: "switching-fuels.png", // Replace with your actual icon paths
-      url:"/projects/switching-fossil-fuels" 
+      icon: "switching-fuels.png",
+      url: "/projects/switching-fossil-fuels",
     },
     {
       title: "Treatment of Wastewater",
@@ -33,7 +32,7 @@ const ChooseYourProject = () => {
       url: "/",
     },
   ];
-  return <ProjectCardsLayout cards={projects} />;
+  return <ProjectCardsLayout title={"Choose your Project"} cards={projects} />;
 };
 
 export default ChooseYourProject;

@@ -46,12 +46,6 @@ const Navbar = () => {
               Contact
             </Link>
             {isLoggedIn ? (
-              // <Link
-              //   to="/logout"
-              //   className="text-black font-semibold hover:text-carbonx-khaki transition-all"
-              // >
-              //   Logout
-              // </Link>
               <button
                 onClick={handleLogout}
                 className="text-black font-semibold hover:text-carbonx-khaki transition-all"
