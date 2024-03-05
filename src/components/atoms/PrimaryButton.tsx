@@ -9,6 +9,7 @@ interface PrimaryButtonProps {
   disabled?: boolean;
   type?: "submit" | "button" | "reset";
   className?: string;
+  onClick?: () => void;
 }
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
@@ -16,12 +17,14 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   disabled,
   type,
   className,
+  onClick,
 }) => {
   return (
     <button
       type={type}
       disabled={disabled}
-      className={`w-full flex justify-center btn btn-primary ${className}`}
+      className={`flex justify-center btn btn-primary ${className}`}
+      onClick={onClick}
     >
       {children}
     </button>
