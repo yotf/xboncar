@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import Root from "./components/Root";
+import AboutYourProject from "./pages/AboutYourProject";
 import ChooseYourProject from "./pages/ChooseYourProject";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
@@ -29,6 +30,14 @@ export const router = createBrowserRouter([
         element: (
           <RequireAuth>
             <SwitchingFossilFuelsPurpose />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "projects/switching-fossil-fuels/:project-purpose",
+        element: (
+          <RequireAuth>
+            <AboutYourProject />
           </RequireAuth>
         ),
       },
