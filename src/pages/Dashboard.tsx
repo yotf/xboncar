@@ -2,6 +2,7 @@ import React from "react";
 import { AddOutline } from "react-ionicons";
 import CustomInput from "../components/atoms/CustomInput";
 import TimeLine from "../components/atoms/TimeLine";
+import { Link } from "react-router-dom";
 
 // Reusable card component
 
@@ -11,7 +12,11 @@ type CardProps = {
   className?: string;
 };
 const Card: React.FC<CardProps> = ({ title, children, className }) => (
-  <div className={`p-4 bg-white rounded-lg shadow border-2 ${className || ""}`}>
+  <div
+    className={`p-4 hover:shadow-lg ease-in-out transition-all hover:bg-carbonx-light-green hover:bg-opacity-30 cursor-pointer bg-white rounded-lg shadow border-2 ${
+      className || ""
+    }`}
+  >
     <h3 className="mb-6 text-xl font-semibold text-center">{title}</h3>
     {children}
   </div>
@@ -39,7 +44,7 @@ const DashboardPage: React.FC = () => {
             </div>
           </Card>
 
-          <div className=" ">
+          <Link to="/projects/2/timeline">
             <Card title="Timeline">
               <TimeLine
                 items={[
@@ -51,7 +56,7 @@ const DashboardPage: React.FC = () => {
                 currentStep={1}
               />
             </Card>
-          </div>
+          </Link>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex gap-6 grow ">
