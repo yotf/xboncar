@@ -3,6 +3,7 @@ import RequireAuth from "./components/RequireAuth";
 import Root from "./components/Root";
 import AboutYourProject from "./pages/AboutYourProject";
 import ChooseYourProject from "./pages/ChooseYourProject";
+import DashboardPage from "./pages/Dashboard";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
+      { path: "projects/:id/dashboard", element: <DashboardPage /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "/", element: <ChooseYourProject /> },
