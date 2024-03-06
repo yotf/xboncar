@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import SwitchingFossilFuelsPurpose from "./pages/SwitchingFossilFuelsPurpose";
 import ProjectsPage from "./pages/projects/ProjectsPage";
+import TimelinePage from "./pages/timeline/TimeLinePage";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
         ),
       },
       { path: "projects/:id/dashboard", element: <DashboardPage /> },
+      { path: "projects/:id/timeline", element: <TimelinePage /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "/", element: <ChooseYourProject /> },
