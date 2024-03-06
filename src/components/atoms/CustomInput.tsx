@@ -4,16 +4,17 @@ import InputErrorMessage from "./InputErrorMessage";
 
 type CustomInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: FieldError;
+  inputClassName?: string;
 };
 
 const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ className, error, id, ...rest }, ref) => {
+  ({ className, error, inputClassName, id, ...rest }, ref) => {
     return (
       <div className={`${className || ""}`}>
         <input
           ref={ref}
           id={id}
-          className={`mt-1 block w-full rounded-md ${
+          className={`mt-1 block w-full rounded-md ${inputClassName || ""}  ${
             error
               ? "border-red-500 focus:ring-red-400 focus:border-red-500"
               : "border-gray-300 focus:border-carbonx-green  focus:ring-carbonx-khaki"

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import CustomInput from "../components/atoms/CustomInput";
-import CustomTextarea from "../components/atoms/CustomTextArea";
+import TextArea from "../components/atoms/TextArea";
 import PrimaryButton from "../components/atoms/PrimaryButton";
 
 const AboutYourProject = () => {
@@ -22,6 +22,7 @@ const AboutYourProject = () => {
 
   const onSubmit = (data: FormFields) => {
     console.log(data);
+    navigate("/projects/2/dashboard");
     //TODO: Send data to server, implement query mutation
   };
   return (
@@ -44,7 +45,7 @@ const AboutYourProject = () => {
             error={errors.name}
             id="name"
           />
-          <CustomTextarea
+          <TextArea
             {...register("description")}
             placeholder="Description"
             error={errors.description}
