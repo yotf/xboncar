@@ -1,6 +1,6 @@
 import React from "react";
 import { AddOutline } from "react-ionicons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../components/atoms/CustomInput";
 import TimeLine from "../components/atoms/TimeLine";
 
@@ -24,6 +24,7 @@ const Card: React.FC<CardProps> = ({ title, children, className }) => (
 
 const DashboardPage: React.FC = () => {
   const prices = [10, 20, 50];
+  const navigate = useNavigate();
 
   return (
     <div className="container mx-auto px-4 mt-6">
@@ -91,7 +92,10 @@ const DashboardPage: React.FC = () => {
               </div>
             </Card>
           </div>
-          <div className="flex gap-6 ">
+          <div
+            className="flex gap-6 "
+            onClick={() => navigate("./baseline-estimate")}
+          >
             <Card title="Baseline Estimation">
               <div className="flex justify-center items-center space-x-4 p-4 ">
                 <div className="flex flex-wrap justify-around items-start w-full">

@@ -99,7 +99,7 @@ const ProjectsPage: React.FC = () => {
             className=""
             onRowDoubleClicked={(params) => {
               debugger;
-              navigate(`/projects/${params.data.projectName}/dashboard`);
+              navigate(`/projects/${params?.data?.projectName}/dashboard`);
             }}
             suppressHorizontalScroll={true}
             onGridReady={(params) => {

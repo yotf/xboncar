@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import Root from "./components/Root";
 import AboutYourProject from "./pages/AboutYourProject";
+import BaseLineEstimatePage from "./pages/BaseLineEstimatePage";
 import ChooseYourProject from "./pages/ChooseYourProject";
 import DashboardPage from "./pages/Dashboard";
 import ErrorPage from "./pages/ErrorPage";
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       },
       { path: "projects/:id/dashboard", element: <DashboardPage /> },
       { path: "projects/:id/dashboard/timeline", element: <TimelinePage /> },
+      {
+        path: "projects/:id/dashboard/baseline-estimate",
+        element: <BaseLineEstimatePage />,
+      },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "/", element: <ChooseYourProject /> },

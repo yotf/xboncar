@@ -20,7 +20,7 @@ const LandingPageLayout: React.FC<LayoutPageContainerProps> = ({
       </div>
       <div className={`w-1/2 max-[846px]:hidden`} />
 
-      <div className="max-[846px]:hidden absolute bg-right z-0  inset-x-0  bottom-0 right-0  max-[1512px]:bg-[url(carbon-bg.png)]  bg-[url(carbon-bg-full.png)] bg-no-repeat  h-[calc(100%-100px)]  bg-contain max-[920px]:bg-cover  "></div>
+      <div className="max-[846px]:hidden absolute bg-right z-0  inset-x-0  bottom-0 right-0  max-[1512px]:bg-[url(/carbon-bg.png)]  bg-[url(/carbon-bg-full.png)] bg-no-repeat  h-[calc(100%-100px)]  bg-contain max-[920px]:bg-cover  "></div>
     </>
   );
 };
