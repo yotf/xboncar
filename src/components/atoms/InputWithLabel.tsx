@@ -14,7 +14,7 @@ const InputWithLabel: React.FC<InputWithLabelProps> = ({
       <label htmlFor={id} className="text-xl font-semibold">
         {label}
       </label>
-      <CustomInput id={id} {...rest} />
+      <CustomInput id={id} {...rest} className="w-48"/>
     </div>
   );
 };

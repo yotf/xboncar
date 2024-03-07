@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AddCircleOutline } from "react-ionicons";
 import FuelForm from "../components/FuelForm";
 import Accordion from "../components/atoms/Accordion";
 import BackButton from "../components/atoms/BackButton";
@@ -9,7 +10,7 @@ import TimeLine from "../components/atoms/TimeLine";
 
 const BaseLineEstimatePage = () => {
   const [currentStep, setCurrentStep] = useState<number>(3);
-  const emissionFactorItems = [
+  const [emissionFactorItems, setEmissionFactorItems] = useState<any[]>([
     {
       title: "Fuel 1",
       content: <FuelForm />,
@@ -18,7 +19,16 @@ const BaseLineEstimatePage = () => {
       title: "Fuel 2",
       content: <FuelForm />,
     },
-  ];
+  ]);
+  const addEmissionFactorItem = () => {
+    setEmissionFactorItems((prev) => [
+      ...prev,
+      {
+        title: `Fuel ${prev.length + 1}`,
+        content: <FuelForm />,
+      },
+    ]);
+  };
 
   const accordionItems = [
     {
@@ -112,12 +122,19 @@ const BaseLineEstimatePage = () => {
     {
       title: "Baseline Emission Factor",
       content: (
-        <div className="m-10">
+        <div className="flex flex-col items-center ">
           <Accordion
             items={emissionFactorItems}
             className="flex-1"
             id="emission-sub"
             name="emission-sub"
+          />
+          <AddCircleOutline
+            onClick={addEmissionFactorItem}
+            cssClasses={
+              "scale-150 hover:scale-[1.8] mt-10 transition-all duration-300 ease-in-out cursor-pointer"
+            }
+            color={"gray"}
           />
         </div>
       ),

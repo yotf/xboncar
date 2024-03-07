@@ -35,7 +35,7 @@ const Accordion: React.FC<AccordionProps> = ({
           >
             {item.title}
           </label>
-          <div className="collapse-content peer-checked:block hidden bg-carbonx-green   bg-opacity-20 !p-9 !rounded-none">
+          <div className="collapse-content peer-checked:block hidden bg-carbonx-green   bg-opacity-20 !p-9 ">
             {item.content}
           </div>
         </div>
