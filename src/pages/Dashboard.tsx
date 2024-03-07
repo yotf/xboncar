@@ -1,8 +1,8 @@
 import React from "react";
 import { AddOutline } from "react-ionicons";
+import { Link } from "react-router-dom";
 import CustomInput from "../components/atoms/CustomInput";
 import TimeLine from "../components/atoms/TimeLine";
-import { Link } from "react-router-dom";
 
 // Reusable card component
 
@@ -44,7 +44,7 @@ const DashboardPage: React.FC = () => {
             </div>
           </Card>
 
-          <Link to="/projects/2/timeline">
+          <Link to="./timeline">
             <Card title="Timeline">
               <TimeLine
                 items={[

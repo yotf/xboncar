@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
         ),
       },
       { path: "projects/:id/dashboard", element: <DashboardPage /> },
-      { path: "projects/:id/timeline", element: <TimelinePage /> },
+      { path: "projects/:id/dashboard/timeline", element: <TimelinePage /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "/", element: <ChooseYourProject /> },

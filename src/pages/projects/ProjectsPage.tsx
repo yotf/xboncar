@@ -97,6 +97,10 @@ const ProjectsPage: React.FC = () => {
             rowData={rowData}
             animateRows={true}
             className=""
+            onRowDoubleClicked={(params) => {
+              debugger;
+              navigate(`/projects/${params.data.projectName}/dashboard`);
+            }}
             suppressHorizontalScroll={true}
             onGridReady={(params) => {
               params.api.sizeColumnsToFit();

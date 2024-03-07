@@ -48,7 +48,7 @@ const FileUploadSection = () => {
               <p>Drop the files here ...</p>
             ) : (
               <>
-                <img src="../../upload-file.png" className="h-10 w-10" />
+                <img src="/upload-file.png" className="h-10 w-10" />
                 <p>
                   Select a CSV, PDF, XML file to upload or drag and drop it here
                 </p>
