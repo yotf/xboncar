@@ -144,7 +144,7 @@ const TimelinePage = () => {
                 <AddCircleOutline
                   color={"gray"}
                   cssClasses={
-                    "hover:scale-150 scale-125transition-all duration-300 cursor-pointer text-xl"
+                    "hover:scale-150 scale-125 transition-all duration-300 cursor-pointer text-xl"
                   }
                 />
               </button>
