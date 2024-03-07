@@ -40,7 +40,7 @@ const FileUploadSection = () => {
         {/* Upload area */}
         <div
           {...getRootProps()}
-          className="border-dashed border-2 border-green-500 p-4 text-center h-52 flex justify-center items-center rounded-lg cursor-pointer transition-all hover:bg-gray-100 hover:border-green-600"
+          className="border-dashed border-2 bg-dropzone-area  border-green-500 p-4 text-center h-52 flex justify-center items-center rounded-lg cursor-pointer transition-all hover:bg-gray-100 hover:border-green-600"
         >
           <input {...getInputProps()} className="h-[500px]" />
           <div className="flex flex-col items-center gap-6 w-[80%]">

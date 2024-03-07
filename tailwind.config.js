@@ -19,6 +19,7 @@ export default {
         'carbonx-khaki': "#93A768",
         'carbonx-light-green': "#dbf4be",
         'carbonx-text-green': "#69B71B",
+        'dropzone-area': "#F5FFEB",
       },
       fontFamily: {
         'inter': ['Inter', 'sans-serif'],

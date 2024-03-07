@@ -1,16 +1,19 @@
-import { useState } from "react";
+import autoAnimate from "@formkit/auto-animate";
+import { useEffect, useRef, useState } from "react";
 import { AddCircleOutline } from "react-ionicons";
 import { useNavigate } from "react-router-dom";
+import PrimaryButton from "../../components/atoms/PrimaryButton";
 import TimeLineHorizontal from "../../components/atoms/TimeLineHorizontal";
 import FileUploadSection from "./FileUploadSection";
+type DocumentGroup = {
+  name: string;
+  isSelected: boolean;
+};
 
 const TimelinePage = () => {
   // Dummy data for timeline steps
 
-  const [documentGroups, setDocumentGroups] = useState([
-    { name: "Group of Document Estimation 1", isSelected: true },
-    { name: "Group of Document Estimation 2", isSelected: false },
-  ]);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const timelineSteps = [
     { name: "Estimation / Conception", completed: true },
     { name: "Certification", completed: false },
@@ -18,17 +21,56 @@ const TimelinePage = () => {
     { name: "Issuance", completed: false },
   ];
 
+  const [documentGroups, setDocumentGroups] = useState<DocumentGroup[]>([
+    {
+      name: `Group of Document ${timelineSteps[currentStep].name} 1`,
+      isSelected: true,
+    },
+    {
+      name: `Group of Document ${timelineSteps[currentStep].name} 2`,
+      isSelected: false,
+    },
+  ]);
+
+  const incrementCurrentStep = () => {
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  useEffect(
+    function resetDocumentGroups() {
+      setDocumentGroups([
+        {
+          name: `Group of Document ${timelineSteps[currentStep].name} 1`,
+          isSelected: true,
+        },
+        {
+          name: `Group of Document ${timelineSteps[currentStep].name} 2`,
+          isSelected: false,
+        },
+      ]);
+    },
+    [currentStep]
+  );
+
+  const parent = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
+
   const addNewDocumentGroup = () => {
     setDocumentGroups((prev) => [
       ...prev,
       {
-        name: `Group of Document Estimation ${prev.length + 1}`,
+        name: `Group of Document ${timelineSteps[currentStep].name} ${
+          prev.length + 1
+        }`,
         isSelected: false,
       },
     ]);
   };
 
-  const activateDocumentGroup = (documentGroup) => {
+  const activateDocumentGroup = (documentGroup: DocumentGroup) => {
     setDocumentGroups((prev) =>
       prev.map((group) => {
         if (group.name === documentGroup.name) {
@@ -38,35 +80,34 @@ const TimelinePage = () => {
       })
     );
   };
-  // Dummy data for document groups
 
   const navigate = useNavigate();
   return (
     <>
       <button
         onClick={() => navigate(-1)}
-        className="text-green-600 hover:text-green-800 transition duration-300 ease-in-out  font-semibold self-start m-5 -mr-5"
+        className="text-green-600  hover:text-green-800 transition duration-300 ease-in-out  font-semibold self-start m-5 -mr-5"
       >
         ‹ Go Back
       </button>
 
-      <div className="mx-auto p-4  mt-4 container">
+      <div className="mx-auto p-4  mt-4 container flex flex-col items-center ">
         <h1 className="text-3xl font-bold text-center mb-8">Timeline</h1>
 
         <TimeLineHorizontal
           items={timelineSteps.map((step) => step.name)}
-          currentStep={1}
+          currentStep={currentStep}
         />
-        <div className="flex justify-between w-[90%]">
-          <div className="flex-1 flex flex-col gap-2  ">
+        <div className="flex justify-between w-[90%] gap-24">
+          <div className="flex-1 flex flex-col gap-2 " ref={parent}>
             {documentGroups.map((group, index) => (
               <div
                 key={index}
-                className=" flex justify-between w-2/3 first:border-none border-t-2 border-gray-200 pt-2 cursor-pointer"
+                className=" flex justify-between  first:border-none border-t-2 border-gray-300 pt-2 cursor-pointer"
                 onClick={() => activateDocumentGroup(group)}
               >
                 <p
-                  className={`${
+                  className={`transition-all duration-500 ${
                     group.isSelected
                       ? "text-carbonx-dark-green font-semibold"
                       : ""
@@ -98,12 +139,12 @@ const TimelinePage = () => {
                 </div>
               </div>
             ))}
-            <div className=" w-2/3 pt-4 flex items-center justify-center">
+            <div className="  pt-4 flex items-center justify-center">
               <button onClick={addNewDocumentGroup}>
                 <AddCircleOutline
                   color={"gray"}
                   cssClasses={
-                    "hover:scale-125 transition-all duration-300 cursor-pointer text-xl"
+                    "hover:scale-150 scale-125transition-all duration-300 cursor-pointer text-xl"
                   }
                 />
               </button>
@@ -112,6 +153,14 @@ const TimelinePage = () => {
           <div className="flex-1">
             <FileUploadSection />
           </div>
+        </div>
+        <div className="flex items-center mt-auto">
+          <PrimaryButton
+            className="w-[169px] h-[63px]"
+            onClick={incrementCurrentStep}
+          >
+            <p className="text-lg"> Validate</p>
+          </PrimaryButton>
         </div>
       </div>
     </>

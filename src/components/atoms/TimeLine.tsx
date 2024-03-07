@@ -9,6 +9,7 @@ const TimeLine: React.FC<TimeLineProps> = ({ items, currentStep }) => {
       {items.map((item, index) => {
         const isCurrent = index === currentStep;
         const isCompleted = index < currentStep;
+        
 
         const isLast = index === items.length - 1;
         return (
