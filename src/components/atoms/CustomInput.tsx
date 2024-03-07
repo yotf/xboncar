@@ -2,15 +2,16 @@ import React from "react";
 import { FieldError } from "react-hook-form";
 import InputErrorMessage from "./InputErrorMessage";
 
-type CustomInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type CustomInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: FieldError;
   inputClassName?: string;
+  endPlaceholder?: string;
 };
 
 const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ className, error, inputClassName, id, ...rest }, ref) => {
+  ({ className, error, inputClassName, id, endPlaceholder, ...rest }, ref) => {
     return (
-      <div className={`${className || ""}`}>
+      <div className={`relative ${className || ""}`}>
         <input
           ref={ref}
           id={id}
@@ -21,6 +22,11 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
           } shadow-sm  focus:ring focus:ring-opacity-20 `}
           {...rest}
         />
+        {endPlaceholder && (
+          <span className="absolute right-2 top-0 h-full flex items-center pointer-events-none text-gray-300">
+            {endPlaceholder}
+          </span>
+        )}
         {error && <InputErrorMessage message={error.message} />}
       </div>
     );
