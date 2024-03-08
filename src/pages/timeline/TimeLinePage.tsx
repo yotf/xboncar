@@ -1,87 +1,262 @@
 import autoAnimate from "@formkit/auto-animate";
-import { useEffect, useRef, useState } from "react";
-import { AddCircleOutline } from "react-ionicons";
+import { useCallback, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import {
+  AddCircleOutline,
+  CloseOutline,
+  InformationCircleOutline,
+} from "react-ionicons";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import TimeLineHorizontal from "../../components/atoms/TimeLineHorizontal";
-import FileUploadSection from "./FileUploadSection";
+import FileUploadSection, { DropZoneDocument } from "./FileUploadSection";
+
 type DocumentGroup = {
+  id: number;
   name: string;
+  documents: DropZoneDocument[];
   isSelected: boolean;
 };
 
+export type TimelineItem = {
+  id: number;
+  name: string;
+  documentGroups: DocumentGroup[];
+  completed: boolean;
+};
+
 const TimelinePage = () => {
-  // Dummy data for timeline steps
-
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const timelineSteps = [
-    { name: "Estimation / Conception", completed: true },
-    { name: "Certification", completed: false },
-    { name: "Monitoring", completed: false },
-    { name: "Issuance", completed: false },
-  ];
 
-  const [documentGroups, setDocumentGroups] = useState<DocumentGroup[]>([
+  const [timelineSteps, setTimelineSteps] = useState<TimelineItem[]>([
     {
-      name: `Group of Document ${timelineSteps[currentStep].name} 1`,
-      isSelected: true,
+      id: 0,
+      name: "Estimation / Conception",
+      completed: false,
+      documentGroups: [
+        {
+          id: 0,
+          name: "Group of Document Estimation / Conception 1",
+          isSelected: true,
+          documents: [],
+        },
+        {
+          id: 1,
+          name: "Group of Document Estimation / Conception 2",
+          isSelected: false,
+          documents: [],
+        },
+      ],
     },
     {
-      name: `Group of Document ${timelineSteps[currentStep].name} 2`,
-      isSelected: false,
+      id: 1,
+      name: "Certification",
+      completed: false,
+      documentGroups: [
+        {
+          id: 0,
+          name: "Group of Document Certification 1",
+          isSelected: true,
+          documents: [],
+        },
+        {
+          id: 1,
+          name: "Group of Document Certification 2",
+          isSelected: false,
+          documents: [],
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Monitoring",
+      completed: false,
+      documentGroups: [
+        {
+          id: 0,
+          name: "Group of Document Monitoring 1",
+          isSelected: true,
+          documents: [],
+        },
+        {
+          id: 1,
+          name: "Group of Document Monitoring 2",
+          isSelected: false,
+          documents: [],
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "Issuance",
+      completed: false,
+      documentGroups: [
+        {
+          id: 0,
+          name: "Group of Document Issuance 1",
+          isSelected: true,
+          documents: [],
+        },
+        {
+          id: 1,
+          name: "Group of Document Issuance 2",
+          isSelected: false,
+          documents: [],
+        },
+      ],
     },
   ]);
 
-  const incrementCurrentStep = () => {
-    setCurrentStep((prev) => prev + 1);
-  };
-
-  useEffect(
-    function resetDocumentGroups() {
-      setDocumentGroups([
-        {
-          name: `Group of Document ${timelineSteps[currentStep].name} 1`,
-          isSelected: true,
-        },
-        {
-          name: `Group of Document ${timelineSteps[currentStep].name} 2`,
-          isSelected: false,
-        },
-      ]);
-    },
-    [currentStep]
-  );
+  const selectedTimeLineStep = timelineSteps[currentStep];
 
   const parent = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current);
   }, [parent]);
 
-  const addNewDocumentGroup = () => {
-    setDocumentGroups((prev) => [
-      ...prev,
-      {
-        name: `Group of Document ${timelineSteps[currentStep].name} ${
-          prev.length + 1
-        }`,
-        isSelected: false,
-      },
-    ]);
+  const completeCurrentStep = () => {
+    setTimelineSteps((prev) =>
+      prev.map((step, index) => {
+        if (index === currentStep) {
+          return { ...step, completed: true };
+        }
+        return step;
+      })
+    );
+    setCurrentStep((prev) => prev + 1);
   };
 
-  const activateDocumentGroup = (documentGroup: DocumentGroup) => {
-    setDocumentGroups((prev) =>
-      prev.map((group) => {
-        if (group.name === documentGroup.name) {
-          return { ...group, isSelected: true };
+  const onClickItem = (index: number) => {
+    if (
+      timelineSteps[index].completed ||
+      (index !== 0 && timelineSteps[index - 1].completed)
+    ) {
+      setCurrentStep(index);
+    } else {
+      toast.error("Please validate the previous step first", {
+        icon: <InformationCircleOutline />,
+      });
+    }
+  };
+
+  const addNewDocumentGroup = () => {
+    setTimelineSteps((prevItems) =>
+      prevItems.map((item, index) => {
+        if (index === currentStep) {
+          return {
+            ...item,
+            documentGroups: [
+              ...item.documentGroups,
+              {
+                id: item.documentGroups.length,
+                name: `Group of Document ${item.name} ${
+                  item.documentGroups.length + 1
+                }`,
+                isSelected: false,
+                documents: [],
+              },
+            ],
+          };
         }
-        return { ...group, isSelected: false };
+        return item;
       })
     );
   };
 
-  const navigate = useNavigate();
+  const activateDocumentGroup = (documentGroup: DocumentGroup) => {
+    setTimelineSteps((prevItems) =>
+      prevItems.map((item, index) => {
+        if (index === currentStep) {
+          return {
+            ...item,
+            documentGroups: item.documentGroups.map((group) => {
+              if (group.name === documentGroup.name) {
+                return { ...group, isSelected: true };
+              }
+              return { ...group, isSelected: false };
+            }),
+          };
+        }
+        return item;
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (
+      selectedTimeLineStep.documentGroups.find((group) => group.isSelected) ===
+      undefined
+    ) {
+      debugger;
+      activateDocumentGroup(selectedTimeLineStep.documentGroups[0]);
+    }
+  }, [timelineSteps]);
+
+  const deleteDocumentGroup = (groupId: number) => {
+    setTimelineSteps((prevItems) =>
+      prevItems.map((item, index) => {
+        if (index === currentStep) {
+          return {
+            ...item,
+            documentGroups: item.documentGroups.filter(
+              (group) => group.id !== groupId
+            ),
+          };
+        }
+        return item;
+      })
+    );
+  };
+
+  const onDrop = useCallback(
+    (acceptedFiles: any) => {
+      setTimelineSteps((prevItems) =>
+        prevItems.map((item, index) => {
+          if (index === currentStep) {
+            return {
+              ...item,
+              documentGroups: item.documentGroups.map((group) => {
+                if (group.isSelected) {
+                  return {
+                    ...group,
+                    documents: [...group.documents, ...acceptedFiles],
+                  };
+                }
+                return group;
+              }),
+            };
+          }
+          return item;
+        })
+      );
+    },
+    [currentStep]
+  );
+
+  const onRemoveDocument = (doc: DropZoneDocument) => {
+    setTimelineSteps((prevItems) =>
+      prevItems.map((item, index) => {
+        if (index === currentStep) {
+          return {
+            ...item,
+            documentGroups: item.documentGroups.map((group) => {
+              if (group.isSelected) {
+                return {
+                  ...group,
+                  documents: group.documents.filter((d) => d !== doc),
+                };
+              }
+              return group;
+            }),
+          };
+        }
+        return item;
+      })
+    );
+  };
+
   return (
     <>
       <button
@@ -95,12 +270,13 @@ const TimelinePage = () => {
         <h1 className="text-3xl font-bold text-center mb-8">Timeline</h1>
 
         <TimeLineHorizontal
-          items={timelineSteps.map((step) => step.name)}
+          items={timelineSteps}
           currentStep={currentStep}
+          onClickItem={onClickItem}
         />
         <div className="flex justify-between w-[90%] gap-24">
           <div className="flex-1 flex flex-col gap-2 " ref={parent}>
-            {documentGroups.map((group, index) => (
+            {selectedTimeLineStep.documentGroups.map((group, index) => (
               <div
                 key={index}
                 className=" flex justify-between  first:border-none border-t-2 border-gray-300 pt-2 cursor-pointer"
@@ -116,7 +292,7 @@ const TimelinePage = () => {
                   {group.name}
                 </p>
                 <div
-                  className={`w-6 h-6 rounded-full border flex items-center justify-center  ${
+                  className={`w-6 h-6 rounded-full border flex items-center ml-auto justify-center  ${
                     group.isSelected
                       ? ` border-carbonx-green border-[3px]`
                       : `border-gray-200 border-[3px]`
@@ -137,6 +313,14 @@ const TimelinePage = () => {
                     </svg>
                   )}
                 </div>
+                {selectedTimeLineStep.documentGroups.length > 1 && (
+                  <button
+                    onClick={() => deleteDocumentGroup(group.id)}
+                    className="text-red-500  ml-4 sel justify-self-center  self-center scale-125 "
+                  >
+                    <CloseOutline />
+                  </button>
+                )}
               </div>
             ))}
             <div className="  pt-4 flex items-center justify-center">
@@ -151,13 +335,21 @@ const TimelinePage = () => {
             </div>
           </div>
           <div className="flex-1">
-            <FileUploadSection />
+            <FileUploadSection
+              onDrop={onDrop}
+              onRemoveDocument={onRemoveDocument}
+              documents={
+                selectedTimeLineStep.documentGroups.find(
+                  (group) => group.isSelected
+                )?.documents
+              }
+            />
           </div>
         </div>
         <div className="flex items-center mt-auto">
           <PrimaryButton
             className="w-[169px] h-[63px]"
-            onClick={incrementCurrentStep}
+            onClick={completeCurrentStep}
           >
             <p className="text-lg"> Validate</p>
           </PrimaryButton>

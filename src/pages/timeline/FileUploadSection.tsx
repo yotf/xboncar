@@ -1,24 +1,27 @@
-import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloseOutline } from "react-ionicons";
 
-const FileUploadSection = () => {
-  const [documents, setDocuments] = useState<Document[]>([]);
-  interface Document {
-    path: string;
-    name: string;
-    lastModified: number;
-    lastModifiedDate: Date;
-    size: number;
-    type: string;
-    webkitRelativePath: string;
-  }
+export interface DropZoneDocument {
+  path: string;
+  name: string;
+  lastModified: number;
+  lastModifiedDate: Date;
+  size: number;
+  type: string;
+  webkitRelativePath: string;
+}
+type FileUploadSectionProps = {
+  documents?: DropZoneDocument[];
+  onRemoveDocument: (doc: DropZoneDocument) => void;
+  onDrop: (acceptedFiles: any) => void;
+};
 
-  const onDrop = useCallback((acceptedFiles: any) => {
-    // Handle the files here
-    setDocuments((prev: Document[]) => [...prev, ...acceptedFiles]);
-    console.log(acceptedFiles);
-  }, []);
+const FileUploadSection: React.FC<FileUploadSectionProps> = ({
+  documents,
+  onRemoveDocument,
+  onDrop,
+}) => {
+  //  const [documents, setDocuments] = useState<Document[]>([]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -28,9 +31,6 @@ const FileUploadSection = () => {
       "application/xml": [".xml"],
     },
   });
-  const onRemoveDocument = (doc: Document) => {
-    setDocuments((prev) => prev.filter((d) => d !== doc));
-  };
 
   // Dummy data for documents
 
@@ -59,7 +59,7 @@ const FileUploadSection = () => {
       </div>
       <div className="flex-1 grid grid-cols-2 justify-items-center gap-x-6">
         {/* List of documents */}
-        {documents.map((doc) => (
+        {documents?.map((doc) => (
           <div
             key={doc.name}
             className="mb-2 flex items-center w-full justify-between "
