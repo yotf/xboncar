@@ -4,9 +4,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import CustomInput from "../components/atoms/CustomInput";
-import PrimaryButton from "../components/atoms/PrimaryButton";
-import { mockLogin } from "../services/mockServices";
+import CustomInput from "../../components/atoms/CustomInput";
+import PrimaryButton from "../../components/atoms/PrimaryButton";
+import { mockLogin } from "../../services/mockServices";
 import LandingPageLayout from "./LandingPageLayout";
 
 const Login = () => {

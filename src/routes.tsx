@@ -1,16 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import Root from "./components/Root";
-import AboutYourProject from "./pages/AboutYourProject";
-import BaseLineEstimatePage from "./pages/BaseLineEstimatePage";
-import ChooseYourProject from "./pages/ChooseYourProject";
 import DashboardPage from "./pages/Dashboard";
 import ErrorPage from "./pages/ErrorPage";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import SwitchingFossilFuelsPurpose from "./pages/SwitchingFossilFuelsPurpose";
+import Login from "./pages/auth/Login";
+import SignUp from "./pages/auth/SignUp";
+import ProvidingElectricityBaseline from "./pages/baselineEstimation/providingElectricityToTheGrid/ProvidingElectricityBaseline";
+import AboutYourProject from "./pages/projectCreation/AboutYourProject";
+import ChooseYourProject from "./pages/projectCreation/ChooseYourProject";
+import SwitchingFossilFuelsPurpose from "./pages/projectCreation/SwitchingFossilFuelsPurpose";
 import ProjectsPage from "./pages/projects/ProjectsPage";
 import TimelinePage from "./pages/timeline/TimeLinePage";
+import ProvidingElectricityProjectEstimation from "./pages/baselineEstimation/providingElectricityToTheGrid/ProvidingElectricityProjectEstimation";
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +49,11 @@ export const router = createBrowserRouter([
       { path: "projects/:id/dashboard/timeline", element: <TimelinePage /> },
       {
         path: "projects/:id/dashboard/baseline-estimate",
-        element: <BaseLineEstimatePage />,
+        element: <ProvidingElectricityBaseline />,
+      },
+      {
+        path: "projects/:id/dashboard/project-estimate",
+        element: <ProvidingElectricityProjectEstimation/>,
       },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },

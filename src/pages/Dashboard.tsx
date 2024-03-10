@@ -10,12 +10,14 @@ type CardProps = {
   title: string;
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 };
-const Card: React.FC<CardProps> = ({ title, children, className }) => (
+const Card: React.FC<CardProps> = ({ title, children, className, onClick }) => (
   <div
     className={`p-4 hover:shadow-lg ease-in-out transition-all hover:bg-carbonx-light-green hover:bg-opacity-30 cursor-pointer bg-white rounded-lg shadow border-2 ${
       className || ""
     }`}
+    onClick={onClick}
   >
     <h3 className="mb-6 text-xl font-semibold text-center">{title}</h3>
     {children}
@@ -92,11 +94,11 @@ const DashboardPage: React.FC = () => {
               </div>
             </Card>
           </div>
-          <div
-            className="flex gap-6 "
-            onClick={() => navigate("./baseline-estimate")}
-          >
-            <Card title="Baseline Estimation">
+          <div className="flex gap-6 ">
+            <Card
+              title="Baseline Estimation"
+              onClick={() => navigate("./baseline-estimate")}
+            >
               <div className="flex justify-center items-center space-x-4 p-4 ">
                 <div className="flex flex-wrap justify-around items-start w-full">
                   {/* Card for Baseline 1 */}
@@ -118,27 +120,32 @@ const DashboardPage: React.FC = () => {
                 </div>
               </div>
             </Card>
-            <Card title="Project Estimation">
-              <div className="flex justify-center items-center space-x-4 p-4 ">
-                <div className="flex flex-wrap justify-around items-start w-full">
-                  <div className="flex flex-col items-center justify-between p-4 m-2 bg-carbonx-green border  rounded-lg shadow w-28 h-24">
-                    <span className="text-sm ">Project 1</span>
-                    <span className="text-sm font-semibold">900 tCO2e</span>
-                  </div>
+            <div>
+              <Card
+                title="Project Estimation"
+                onClick={() => navigate("./project-estimate")}
+              >
+                <div className="flex justify-center items-center space-x-4 p-4 ">
+                  <div className="flex flex-wrap justify-around items-start w-full">
+                    <div className="flex flex-col items-center justify-between p-4 m-2 bg-carbonx-green border  rounded-lg shadow w-28 h-24">
+                      <span className="text-sm ">Project 1</span>
+                      <span className="text-sm font-semibold">900 tCO2e</span>
+                    </div>
 
-                  <div className="flex flex-col items-center justify-between p-4 m-2 border rounded-lg shadow w-28 h-24">
-                    <span className="text-sm ">Project 2</span>
-                    <span className="text-sm font-semibold">700 tCO2e</span>
-                  </div>
+                    <div className="flex flex-col items-center justify-between p-4 m-2 border rounded-lg shadow w-28 h-24">
+                      <span className="text-sm ">Project 2</span>
+                      <span className="text-sm font-semibold">700 tCO2e</span>
+                    </div>
 
-                  <div className="flex transition-all items-center hover:bg-carbonx-light-green justify-center w-28 h-24 p-4 m-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer">
-                    <div className=" transition-all">
-                      <AddOutline />
+                    <div className="flex transition-all items-center hover:bg-carbonx-light-green justify-center w-28 h-24 p-4 m-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer">
+                      <div className=" transition-all">
+                        <AddOutline />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

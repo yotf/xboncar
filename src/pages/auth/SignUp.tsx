@@ -3,9 +3,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Link } from "react-router-dom";
-import CustomCheckbox from "../components/atoms/CustomCheckbox";
-import CustomInput from "../components/atoms/CustomInput";
-import PrimaryButton from "../components/atoms/PrimaryButton";
+import CustomCheckbox from "../../components/atoms/CustomCheckbox";
+import CustomInput from "../../components/atoms/CustomInput";
+import PrimaryButton from "../../components/atoms/PrimaryButton";
 import LandingPageLayout from "./LandingPageLayout";
 
 const SignUp = () => {

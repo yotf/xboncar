@@ -1,4 +1,4 @@
-import InputWithLabel from "./atoms/InputWithLabel";
+import InputWithLabel from "../../components/atoms/InputWithLabel";
 
 const FuelForm = () => {
   return (
@@ -52,7 +52,7 @@ const FuelForm = () => {
       <InputWithLabel
         label={
           <p>
-            E<span className="text-xs">BSL</span>
+            ε<span className="text-xs">BSL</span>
           </p>
         }
         id="e_bsl"
@@ -61,7 +61,7 @@ const FuelForm = () => {
       <InputWithLabel
         label={
           <p>
-            E<span className="text-xs">PJ</span>
+            ε<span className="text-xs">PJ</span>
           </p>
         }
         id="e_pj"

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { AddCircleOutline } from "react-ionicons";
-import FuelForm from "../components/FuelForm";
-import Accordion from "../components/atoms/Accordion";
-import BackButton from "../components/atoms/BackButton";
-import InputWithLabel from "../components/atoms/InputWithLabel";
-import PrimaryButton from "../components/atoms/PrimaryButton";
-import Select from "../components/atoms/Select";
-import TimeLine from "../components/atoms/TimeLine";
+import Accordion from "../../../components/atoms/Accordion";
+import BackButton from "../../../components/atoms/BackButton";
+import InputWithLabel from "../../../components/atoms/InputWithLabel";
+import PrimaryButton from "../../../components/atoms/PrimaryButton";
+import Select from "../../../components/atoms/Select";
+import TimeLine from "../../../components/atoms/TimeLine";
+import FuelForm from "../FuelForm";
 
-const BaseLineEstimatePage = () => {
+const ProvidingElectricityBaseline = () => {
   const [currentStep, setCurrentStep] = useState<number>(3);
   const [emissionFactorItems, setEmissionFactorItems] = useState<any[]>([
     {
@@ -176,4 +176,4 @@ const BaseLineEstimatePage = () => {
   );
 };
 
-export default BaseLineEstimatePage;
+export default ProvidingElectricityBaseline;

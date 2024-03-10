@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import CustomInput from "../components/atoms/CustomInput";
-import TextArea from "../components/atoms/TextArea";
-import PrimaryButton from "../components/atoms/PrimaryButton";
+import CustomInput from "../../components/atoms/CustomInput";
+import PrimaryButton from "../../components/atoms/PrimaryButton";
+import TextArea from "../../components/atoms/TextArea";
 
 const AboutYourProject = () => {
   const schema = z.object({

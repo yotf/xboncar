@@ -7,6 +7,7 @@ import {
   InformationCircleOutline,
 } from "react-ionicons";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../components/atoms/BackButton";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import TimeLineHorizontal from "../../components/atoms/TimeLineHorizontal";
 import FileUploadSection, { DropZoneDocument } from "./FileUploadSection";
@@ -258,15 +259,10 @@ const TimelinePage = () => {
   };
 
   return (
-    <>
-      <button
-        onClick={() => navigate(-1)}
-        className="text-green-600  hover:text-green-800 transition duration-300 ease-in-out  font-semibold self-start m-5 -mr-5"
-      >
-        ‹ Go Back
-      </button>
+    <div className="mx-auto  container">
+      <BackButton label="Return to Dashboard" />
 
-      <div className="mx-auto p-4  mt-4 container flex flex-col items-center ">
+      <div className=" flex flex-col items-center mx-2">
         <h1 className="text-3xl font-bold text-center mb-8">Timeline</h1>
 
         <TimeLineHorizontal
@@ -355,7 +351,7 @@ const TimelinePage = () => {
           </PrimaryButton>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
