@@ -7,16 +7,8 @@ import React, { useState } from "react";
 import { AddOutline } from "react-ionicons";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
+import { ProjectBase } from "../types";
 import "./projectsTableStyles.css";
-
-interface Project {
-  stage: string;
-  projectName: string;
-  typeOfProject: string;
-  estimatedER: number;
-  estimatedCCFinancing: string;
-  creationDate: string;
-}
 
 const columnDefs: ColDef[] = [
   {
@@ -31,7 +23,7 @@ const columnDefs: ColDef[] = [
     filter: true,
   },
   {
-    field: "typeOfProject",
+    field: "projectType",
     sortable: true,
     filter: true,
     //headerClass: "ag-header-cell-label",
@@ -46,32 +38,48 @@ const columnDefs: ColDef[] = [
 ];
 
 const ProjectsPage: React.FC = () => {
-  const [rowData] = useState<Project[]>([
+  const [rowData] = useState<ProjectBase[]>([
     {
-      stage: "Estimation",
-      projectName: "Project Name 1",
-      typeOfProject: "Providing Electricity to the Grid",
-      estimatedER: 3000,
+      id: 0,
+      project: "Switching Fossil Fuels",
+      projectType: "Existing Facility Generating Energy for Captive Users",
+      stage: "Estimation/Conception",
       estimatedCCFinancing: "$60,000",
+      estimatedER: 3000,
+      projectName: "Project Name 1",
       creationDate: "12/01/2024",
     },
     {
-      stage: "Implementation",
-      projectName: "Project Name 2",
-      typeOfProject: "Solar Power Development",
-      estimatedER: 5000,
+      id: 1,
+      project: "Treatment of Wastewater",
+      projectType: "Providing Electricity to the Grid",
+      stage: "Certification",
       estimatedCCFinancing: "$120,000",
+      estimatedER: 5000,
+      projectName: "Project Name 2",
       creationDate: "15/02/2024",
     },
     {
-      stage: "Completed",
+      id: 2,
+      project:
+        "EnergyEfficiency for Thermal Applications of Non-Renewable Biomass",
+      projectType: "Greenfield/Capacity Expansion",
+      stage: "Monitoring",
+      estimatedCCFinancing: "$120,000",
+      estimatedER: 5000,
       projectName: "Project Name 3",
-      typeOfProject: "Wind Farm Installation",
-      estimatedER: 7500,
-      estimatedCCFinancing: "$200,000",
-      creationDate: "20/03/2024",
+      creationDate: "15/02/2024",
     },
-    // ... more data ...
+    {
+      id: 3,
+      project: "Increasing the Blend in Cement Production",
+      projectType: "Greenfield/Capacity Expansion",
+      stage: "Issuance",
+      estimatedCCFinancing: "$120,000",
+      estimatedER: 5000,
+      projectName: "Project Name 4",
+      creationDate: "15/02/2024",
+    },
   ]);
   const navigate = useNavigate();
 
@@ -92,14 +100,13 @@ const ProjectsPage: React.FC = () => {
       </div>
       <div className="w-full m-auto  p-6 pt-0 ">
         <div className="ag-theme-quartz h-[400px] ">
-          <AgGridReact<Project>
+          <AgGridReact<ProjectBase>
             columnDefs={columnDefs}
             rowData={rowData}
             animateRows={true}
             className=""
             onRowDoubleClicked={(params) => {
-              debugger;
-              navigate(`/projects/${params?.data?.projectName}/dashboard`);
+              navigate(`/projects/${params?.data?.id}/dashboard`);
             }}
             suppressHorizontalScroll={true}
             onGridReady={(params) => {

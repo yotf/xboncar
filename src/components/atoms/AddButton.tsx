@@ -8,7 +8,8 @@ const AddButton: React.FC<AddButtonProps> = ({ onClick }) => {
     <PlusIcon
       onClick={onClick}
       className="
-            w-10 h-10
+            w-[36px]
+            h-[36px]
             mt-10
             p-2
             text-black
