@@ -6,7 +6,6 @@ import {
   CloseOutline,
   InformationCircleOutline,
 } from "react-ionicons";
-import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/atoms/BackButton";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import TimeLineHorizontal from "../../components/atoms/TimeLineHorizontal";
@@ -111,7 +110,10 @@ const TimelinePage = () => {
   const selectedTimeLineStep = timelineSteps[currentStep];
 
   const parent = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+
+  //const { projectId } = useParams();
+
+  // const { data: projectData, isLoading, isError } = useProjectData(projectId);
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current);
@@ -126,6 +128,9 @@ const TimelinePage = () => {
         return step;
       })
     );
+    if (currentStep === timelineSteps.length - 1) {
+      return;
+    }
     setCurrentStep((prev) => prev + 1);
   };
 
@@ -259,10 +264,10 @@ const TimelinePage = () => {
   };
 
   return (
-    <div className="mx-auto  container">
+    <div className="mx-auto  container ">
       <BackButton label="Return to Dashboard" />
 
-      <div className=" flex flex-col items-center mx-2">
+      <div className=" flex flex-col items-center mx-2 h-[calc(100%-100px)]">
         <h1 className="text-3xl font-bold text-center mb-8">Timeline</h1>
 
         <TimeLineHorizontal

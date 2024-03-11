@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import CustomInput from "../../components/atoms/CustomInput";
@@ -22,7 +23,9 @@ const AboutYourProject = () => {
 
   const onSubmit = (data: FormFields) => {
     console.log(data);
-    navigate("/projects/2/dashboard");
+    toast.success("Project created successfully");
+    navigate("/projects/0/dashboard");
+
     //TODO: Send data to server, implement query mutation
   };
   return (
