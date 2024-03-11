@@ -15,7 +15,6 @@ const DashboardPage: React.FC = () => {
 
   const { projectId } = useParams();
   const { data: projectData, isLoading } = useProjectData(Number(projectId));
-
   const [baseLineEstimate, setBaseLineEstimate] = React.useState<number>();
   const [projectEstimate, setProjectEstimate] = React.useState<number>();
   const [price, setPrice] = React.useState<number>();
