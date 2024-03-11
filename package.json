@@ -20,6 +20,7 @@
     "@types/dropzone": "^5.7.8",
     "ag-grid-community": "^31.1.1",
     "ag-grid-react": "^31.1.1",
+    "axios": "^1.6.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
