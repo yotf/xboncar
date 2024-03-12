@@ -4,11 +4,11 @@ import Root from "./components/Root";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
-import DashboardPage from "./pages/baselineEstimation/dashboard/Dashboard";
-import ExistingFacilityBaseline from "./pages/baselineEstimation/existingFacility/ExistingFacilityBaseline";
-import GreenFieldBaseline from "./pages/baselineEstimation/greenFieldCapacityExpansion/GreenFieldBaseline";
-import ProvidingElectricityBaseline from "./pages/baselineEstimation/providingElectricityToTheGrid/ProvidingElectricityBaseline";
-import ProvidingElectricityProjectEstimation from "./pages/baselineEstimation/providingElectricityToTheGrid/ProvidingElectricityProjectEstimation";
+import DashboardPage from "./pages/dashboard/Dashboard";
+import ExistingFacilityBaseline from "./pages/estimation/ExistingFacilityBaseline";
+import GreenFieldBaseline from "./pages/estimation/GreenFieldBaseline";
+import ProjectEstimation from "./pages/estimation/ProjectEstimation";
+import ProvidingElectricityBaseline from "./pages/estimation/ProvidingElectricityBaseline";
 import AboutYourProject from "./pages/projectCreation/AboutYourProject";
 import ChooseYourProject from "./pages/projectCreation/ChooseYourProject";
 import SwitchingFossilFuelsPurpose from "./pages/projectCreation/SwitchingFossilFuelsPurpose";
@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "projects/:projectId/dashboard/project-estimate/electricity-grid",
-        element: <ProvidingElectricityProjectEstimation />,
+        element: <ProjectEstimation />,
       },
       {
         path: "projects/:projectId/dashboard/baseline-estimate/captive-energy",
@@ -66,7 +66,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "projects/:projectId/dashboard/project-estimate/captive-energy",
-        element: <div>todo</div>,
+        element: <ProjectEstimation />,
       },
       {
         path: "projects/:projectId/dashboard/baseline-estimate/greenfield-expansion",
@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "projects/:projectId/dashboard/project-estimate/greenfield-expansion",
-        element: <div>TODO</div>,
+        element: <ProjectEstimation />,
       },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
