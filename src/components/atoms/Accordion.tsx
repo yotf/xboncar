@@ -19,7 +19,7 @@ const Accordion: React.FC<AccordionProps> = ({
   name,
 }) => {
   return (
-    <div className={className}>
+    <div className={`w-[90%] ${className || ""}`}>
       {items.map((item, index) => (
         <div key={index} className="collapse collapse-arrow rounded-none">
           <input

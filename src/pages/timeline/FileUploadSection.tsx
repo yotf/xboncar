@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloseOutline } from "react-ionicons";
 
@@ -22,14 +23,38 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   onDrop,
 }) => {
   //  const [documents, setDocuments] = useState<Document[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+    onDrop: (acceptedFiles, fileRejections) => {
+      setErrorMessage(null);
+      if (fileRejections.length > 0) {
+        const { errors } = fileRejections[0];
+        const errorMessages = errors.map((error) => {
+          switch (error.code) {
+            case "file-invalid-type":
+              return "The file format is not supported. Your file must be one of the following formats: PDF, CSV, XML.";
+            case "file-too-large":
+              return "The uploaded file exceeds the maximum allowed size. Your file must be no larger than 10MB.";
+            case "too-many-files":
+              return "You cannot upload more than 6 documents. Please limit your upload to 6 documents.";
+            default:
+              return "An error occurred while uploading the file. Please try again later.";
+          }
+        });
+        setErrorMessage(errorMessages[0]);
+      } else {
+        onDrop(acceptedFiles);
+      }
+    },
+
     accept: {
       "text/csv": [".csv"],
       "application/pdf": [".pdf"],
       "application/xml": [".xml"],
     },
+    maxFiles: 6,
+    maxSize: 10 * 1024 * 1024, //10mb
   });
 
   // Dummy data for documents
@@ -56,6 +81,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
             )}
           </div>
         </div>
+        {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
       </div>
       <div className="flex-1 grid grid-cols-2 justify-items-center gap-x-6">
         {/* List of documents */}

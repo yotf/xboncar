@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddOutline } from "react-ionicons";
 import { useNavigate } from "react-router-dom";
-import { ProjectType, ProjectTypeShorthand } from "../../types";
+import { ProjectType, ProjectTypeShorthand } from "../types";
 import CalculationCard from "./CalculationCard";
 import SectionCard from "./SectionCard";
 
@@ -32,6 +32,15 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
       );
     }
   };
+
+  useEffect(() => {
+    if (calculations.length > 0) {
+      setSelectedCard(calculations[0].title);
+      if (onCardSelect) {
+        onCardSelect(calculations[0].calculation);
+      }
+    }
+  }, []);
 
   return (
     <SectionCard title={title}>

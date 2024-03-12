@@ -1,4 +1,4 @@
-import { ProjectType } from "../../types";
+import { ProjectType } from "../types";
 import EstimateSection from "./EstimateSection";
 
 type ProjectEstimateSectionProps = {

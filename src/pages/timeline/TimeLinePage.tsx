@@ -111,7 +111,7 @@ const TimelinePage = () => {
 
   const parent = useRef<HTMLDivElement>(null);
 
-  //const { projectId } = useParams();
+  // const { projectId } = useParams();
 
   // const { data: projectData, isLoading, isError } = useProjectData(projectId);
 
@@ -190,16 +190,6 @@ const TimelinePage = () => {
     );
   };
 
-  useEffect(() => {
-    if (
-      selectedTimeLineStep.documentGroups.find((group) => group.isSelected) ===
-      undefined
-    ) {
-      debugger;
-      activateDocumentGroup(selectedTimeLineStep.documentGroups[0]);
-    }
-  }, [timelineSteps]);
-
   const deleteDocumentGroup = (groupId: number) => {
     setTimelineSteps((prevItems) =>
       prevItems.map((item, index) => {
@@ -225,6 +215,15 @@ const TimelinePage = () => {
               ...item,
               documentGroups: item.documentGroups.map((group) => {
                 if (group.isSelected) {
+                  if (group.documents.length >= 6) {
+                    toast.error(
+                      "You cannot upload more than 6 documents. Please limit your upload to 6 documents.",
+                      {
+                        icon: <InformationCircleOutline />,
+                      }
+                    );
+                    return group;
+                  }
                   return {
                     ...group,
                     documents: [...group.documents, ...acceptedFiles],
@@ -262,6 +261,15 @@ const TimelinePage = () => {
       })
     );
   };
+
+  useEffect(() => {
+    if (
+      selectedTimeLineStep.documentGroups.find((group) => group.isSelected) ===
+      undefined
+    ) {
+      activateDocumentGroup(selectedTimeLineStep.documentGroups[0]);
+    }
+  }, [timelineSteps]);
 
   return (
     <div className="mx-auto  container ">

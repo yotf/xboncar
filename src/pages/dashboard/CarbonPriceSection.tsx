@@ -1,5 +1,5 @@
-import { useState } from "react";
-import CustomInput from "../../../components/atoms/CustomInput";
+import { useEffect, useState } from "react";
+import CustomInput from "../../components/atoms/CustomInput";
 import SectionCard from "./SectionCard";
 
 type CarbonPriceSectionProps = {
@@ -12,6 +12,13 @@ const CarbonPriceSection: React.FC<CarbonPriceSectionProps> = ({
   const prices = [10, 20, 50];
 
   const [selectedPrice, setSelectedPrice] = useState<number>();
+
+  useEffect(() => {
+    if (prices.length > 0) {
+      setSelectedPrice(prices[0]);
+      onPriceSelected(prices[0]);
+    }
+  }, []);
   return (
     <SectionCard title="Carbon Price" className="px-10">
       <div className="grid grid-cols-2 gap-6 gap-x-12 gap-4 items-center justify-items-center w-fit  ">

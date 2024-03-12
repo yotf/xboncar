@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { AddCircleOutline } from "react-ionicons";
-import Accordion from "../../../components/atoms/Accordion";
-import BackButton from "../../../components/atoms/BackButton";
-import InputWithLabel from "../../../components/atoms/InputWithLabel";
-import PrimaryButton from "../../../components/atoms/PrimaryButton";
-import Select from "../../../components/atoms/Select";
-import TimeLine from "../../../components/atoms/TimeLine";
-import FuelForm from "../FuelForm";
+import Accordion from "../../components/atoms/Accordion";
+import BackButton from "../../components/atoms/BackButton";
+import InputWithLabel from "../../components/atoms/InputWithLabel";
+import PrimaryButton from "../../components/atoms/PrimaryButton";
+import Select from "../../components/atoms/Select";
+import TimeLine from "../../components/atoms/TimeLine";
+import FuelForm from "./FuelForm";
 
 const ProvidingElectricityBaseline = () => {
   const [currentStep, setCurrentStep] = useState<number>(3);

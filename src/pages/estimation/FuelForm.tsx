@@ -1,6 +1,8 @@
+import { useFormContext } from "react-hook-form";
 import InputWithLabel from "../../components/atoms/InputWithLabel";
 
 const FuelForm = () => {
+  const { register } = useFormContext();
   return (
     <div className="grid grid-cols-3 gap-6">
       <InputWithLabel label={<p>Name</p>} id="name" placeholder="Fuel 1" />

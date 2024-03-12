@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import TimeLine from "../../../components/atoms/TimeLine";
-import { useProjectData } from "../../queries";
-import { stages } from "../../types";
+import TimeLine from "../../components/atoms/TimeLine";
+import { useProjectData } from "../queries";
+import { stages } from "../types";
 import BaselineEstimateSection from "./BaselineEstimateSection";
 import CarbonPriceSection from "./CarbonPriceSection";
 import ProjectEstimateSection from "./ProjectEstimateSection";
@@ -24,6 +24,10 @@ const DashboardPage: React.FC = () => {
     baseLineEstimate && projectEstimate
       ? baseLineEstimate - projectEstimate
       : undefined;
+
+  const timelineCurrentStep = stages.findIndex(
+    (stage) => stage === projectData?.stage
+  );
 
   return (
     <div className="container mx-auto px-4 mt-6">
@@ -48,12 +52,7 @@ const DashboardPage: React.FC = () => {
             title="Timeline"
             onClick={() => navigate("./timeline")}
           >
-            <TimeLine
-              items={stages}
-              currentStep={stages.findIndex(
-                (stage) => stage === projectData?.stage
-              )}
-            />
+            <TimeLine items={stages} currentStep={timelineCurrentStep} />
           </SectionCard>
         </div>
         <div className="flex flex-col gap-6">

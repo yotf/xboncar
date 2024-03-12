@@ -1,4 +1,4 @@
-import { ProjectType } from "../../types";
+import { ProjectType } from "../types";
 import EstimateSection from "./EstimateSection";
 
 type BaselineEstimateSectionProps = {
@@ -19,6 +19,8 @@ const BaselineEstimateSection: React.FC<BaselineEstimateSectionProps> = ({
       calculation: 800,
     },
   ];
+
+  
 
   return (
     <EstimateSection

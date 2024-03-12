@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Accordion, { AccordionItem } from "../../../components/atoms/Accordion";
-import AddButton from "../../../components/atoms/AddButton";
-import BackButton from "../../../components/atoms/BackButton";
-import ProjectFuelForm from "../ProjectFuelForm";
+import Accordion, { AccordionItem } from "../../components/atoms/Accordion";
+import AddButton from "../../components/atoms/AddButton";
+import BackButton from "../../components/atoms/BackButton";
+import ProjectFuelForm from "./ProjectFuelForm";
 
-const ProvidingElectricityProjectEstimation = () => {
+const ProjectEstimation = () => {
   const [fuelItems, setFuelItems] = useState<AccordionItem[]>([
     {
       title: "Fuel 1",
@@ -54,4 +54,4 @@ const ProvidingElectricityProjectEstimation = () => {
   );
 };
 
-export default ProvidingElectricityProjectEstimation;
+export default ProjectEstimation;
