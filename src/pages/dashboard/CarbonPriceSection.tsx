@@ -11,7 +11,7 @@ const CarbonPriceSection: React.FC<CarbonPriceSectionProps> = ({
 }) => {
   const prices = [10, 20, 50];
 
-  const [selectedPrice, setSelectedPrice] = useState<number>();
+  const [selectedPrice, setSelectedPrice] = useState<number | null>();
 
   useEffect(() => {
     if (prices.length > 0) {
@@ -42,6 +42,10 @@ const CarbonPriceSection: React.FC<CarbonPriceSectionProps> = ({
           className="w-[86px]  "
           placeholder="$__ "
           inputClassName=" h-[80px] mt-0 border-2 text-center"
+          onChange={(event) => {
+            setSelectedPrice(null);
+            onPriceSelected(Number(event.target.value));
+          }}
         />
       </div>
     </SectionCard>
