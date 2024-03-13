@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -6,28 +7,37 @@ import { z } from "zod";
 import CustomInput from "../../components/atoms/CustomInput";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import TextArea from "../../components/atoms/TextArea";
+import { addProject } from "./api";
+
+const schema = z.object({
+  name: z.string().min(2),
+  description: z.string(),
+});
+export type AboutProjectFormFields = z.infer<typeof schema>;
 
 const AboutYourProject = () => {
-  const schema = z.object({
-    name: z.string().min(2),
-    description: z.string(),
-  });
-  type FormFields = z.infer<typeof schema>;
-
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<FormFields>({ resolver: zodResolver(schema) });
+    formState: { errors, isSubmitting },
+  } = useForm<AboutProjectFormFields>({ resolver: zodResolver(schema) });
 
-  const onSubmit = (data: FormFields) => {
-    console.log(data);
-    toast.success("Project created successfully");
-    navigate("/projects/0/dashboard");
+  const addProjectMutation = useMutation({
+    mutationFn: addProject,
+    onSuccess: () => {
+      toast.success("Project created successfully");
+      navigate("/projects/");
+    },
+    onError: (error) => {
+      toast.error("An error occurred");
+    },
+  });
 
-    //TODO: Send data to server, implement query mutation
+  const onSubmit = (data: AboutProjectFormFields) => {
+    addProjectMutation.mutate(data);
   };
+
   return (
     <>
       <button
@@ -55,8 +65,14 @@ const AboutYourProject = () => {
             id="description"
             textareaClassName="h-40"
           />
-          <PrimaryButton type="submit" className="w-full ">
-            Validate
+          <PrimaryButton
+            disabled={isSubmitting || addProjectMutation.isPending}
+            type="submit"
+            className="w-full "
+          >
+            {isSubmitting || addProjectMutation.isPending
+              ? "Loading..."
+              : "Validate"}
           </PrimaryButton>
         </form>
       </div>
