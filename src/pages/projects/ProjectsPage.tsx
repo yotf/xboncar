@@ -1,14 +1,15 @@
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
-import React, { useState } from "react";
-import { AddOutline } from "react-ionicons";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import { ProjectBase } from "../types";
 import "./projectsTableStyles.css";
+import { useProjectsTableData } from "./queries";
 
 const columnDefs: ColDef[] = [
   {
@@ -38,49 +39,9 @@ const columnDefs: ColDef[] = [
 ];
 
 const ProjectsPage: React.FC = () => {
-  const [rowData] = useState<ProjectBase[]>([
-    {
-      id: 0,
-      project: "Switching Fossil Fuels",
-      projectType: "Existing Facility Generating Energy for Captive Users",
-      stage: "Estimation/Conception",
-      estimatedCCFinancing: "$60,000",
-      estimatedER: 3000,
-      projectName: "Project Name 1",
-      creationDate: "12/01/2024",
-    },
-    {
-      id: 1,
-      project: "Treatment of Wastewater",
-      projectType: "Providing Electricity to the Grid",
-      stage: "Certification",
-      estimatedCCFinancing: "$120,000",
-      estimatedER: 5000,
-      projectName: "Project Name 2",
-      creationDate: "15/02/2024",
-    },
-    {
-      id: 2,
-      project:
-        "EnergyEfficiency for Thermal Applications of Non-Renewable Biomass",
-      projectType: "Greenfield/Capacity Expansion",
-      stage: "Monitoring",
-      estimatedCCFinancing: "$120,000",
-      estimatedER: 5000,
-      projectName: "Project Name 3",
-      creationDate: "15/02/2024",
-    },
-    {
-      id: 3,
-      project: "Increasing the Blend in Cement Production",
-      projectType: "Greenfield/Capacity Expansion",
-      stage: "Issuance",
-      estimatedCCFinancing: "$120,000",
-      estimatedER: 5000,
-      projectName: "Project Name 4",
-      creationDate: "15/02/2024",
-    },
-  ]);
+  //const [rowData] = useState<ProjectBase[]>();
+
+  const { data: rowData, isLoading, error } = useProjectsTableData();
   const navigate = useNavigate();
 
   const onNewProjectClick = () => {
@@ -92,7 +53,7 @@ const ProjectsPage: React.FC = () => {
       <div className="flex justify-between items-center p-8">
         <h1 className="text-2xl font-bold">Current Projects</h1>
         <PrimaryButton className=" w-40" onClick={onNewProjectClick}>
-          <AddOutline /> New Project
+          <PlusIcon className="w-5 h-5" /> New Project
         </PrimaryButton>
         {/* <button className="bg-carbonx-green text-white px-4 py-2 rounded-md">
         Add Project
@@ -102,7 +63,7 @@ const ProjectsPage: React.FC = () => {
         <div className="ag-theme-quartz h-[400px] ">
           <AgGridReact<ProjectBase>
             columnDefs={columnDefs}
-            rowData={rowData}
+            rowData={rowData ?? []}
             animateRows={true}
             className=""
             onRowDoubleClicked={(params) => {
