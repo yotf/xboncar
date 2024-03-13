@@ -2,53 +2,69 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import CustomCheckbox from "../../components/atoms/CustomCheckbox";
 import CustomInput from "../../components/atoms/CustomInput";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import LandingPageLayout from "./LandingPageLayout";
+import { signupUser } from "./api";
+
+const phoneRegex = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+);
+const schema = z
+  .object({
+    firstName: z.string().min(2),
+    lastName: z.string().min(2),
+    organization: z.string().min(2),
+    phoneNumber: z.string().regex(phoneRegex, "Invalid phone number"),
+    email: z.string().email(),
+    password: z.string().min(8),
+    passwordConfirmation: z.string().min(8),
+    termsAndConditions: z.boolean(),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords do not match",
+    path: ["passwordConfirmation"],
+  })
+  .refine((data) => data.termsAndConditions, {
+    message: "You must agree to the terms and conditions",
+    path: ["termsAndConditions"],
+  });
+
+export type SignupFormFields = z.infer<typeof schema>;
 
 const SignUp = () => {
-  const phoneRegex = new RegExp(
-    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
-  );
-  const schema = z
-    .object({
-      firstName: z.string().min(2),
-      lastName: z.string().min(2),
-      organization: z.string().min(2),
-      phoneNumber: z.string().regex(phoneRegex, "Invalid phone number"),
-      email: z.string().email(),
-      password: z.string().min(8),
-      passwordConfirmation: z.string().min(8),
-      termsAndConditions: z.boolean(),
-    })
-    .refine((data) => data.password === data.passwordConfirmation, {
-      message: "Passwords do not match",
-      path: ["passwordConfirmation"],
-    })
-    .refine((data) => data.termsAndConditions, {
-      message: "You must agree to the terms and conditions",
-      path: ["termsAndConditions"],
-    });
-
-  type FormFields = z.infer<typeof schema>;
   const {
     register,
     handleSubmit,
     setError,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<FormFields>({ resolver: zodResolver(schema) });
+  } = useForm<SignupFormFields>({ resolver: zodResolver(schema) });
   const { termsAndConditions } = watch();
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
-    try {
-      await new Promise((r) => setTimeout(r, 1000));
-      throw new Error();
-    } catch (error) {
-      setError("root", { message: "Could not create user" }); //TODO: Get error message from server
-    }
+
+  const navigate = useNavigate();
+
+  const signupMutation = useMutation({
+    mutationFn: signupUser,
+    onSuccess: () => {
+      toast.success("Account created successfully! You can login now", {
+        duration: 4000, // Display the toast for 4 seconds);
+      });
+
+      navigate("/login");
+    },
+    onError: (error) => {
+      setError("root", { message: error.message });
+    },
+  });
+
+  const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
+    signupMutation.mutate(data);
+    await new Promise((r) => setTimeout(r, 1000)); //TODO: Remove after connected to server
   };
 
   return (
@@ -116,14 +132,16 @@ const SignUp = () => {
           id="termsAndConditions"
         />
         <PrimaryButton
-          disabled={isSubmitting || !termsAndConditions}
+          disabled={
+            isSubmitting || !termsAndConditions || signupMutation.isPending
+          }
           type="submit"
           className="col-span-2"
         >
-          {isSubmitting ? "Loading..." : "Next"}
+          {isSubmitting || signupMutation.isPending ? "Loading..." : "Next"}
         </PrimaryButton>
 
-        {/* {errors.root && <Alert message={errors.root.message!} />} */}
+     
       </form>
       <div className="text-center mt-6">
         <Link to="/login" className="">
