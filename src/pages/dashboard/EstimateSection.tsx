@@ -1,12 +1,17 @@
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { AddOutline } from "react-ionicons";
 import { useNavigate } from "react-router-dom";
 import { ProjectType, ProjectTypeShorthand } from "../types";
 import CalculationCard from "./CalculationCard";
 import SectionCard from "./SectionCard";
 
+export type Calculation = {
+  title: string;
+  calculation: number;
+};
+
 type EstimateSectionProps = {
-  calculations: { title: string; calculation: number }[];
+  calculations: Calculation[];
   title: "Baseline Estimation" | "Project Estimation";
   projectType: ProjectType;
   onCardSelect?: (calculation: number) => void;
@@ -40,10 +45,10 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
         onCardSelect(calculations[0].calculation);
       }
     }
-  }, []);
+  }, [calculations]);
 
   return (
-    <SectionCard title={title}>
+    <SectionCard title={title} className="w-[452px]">
       <div className="flex justify-center items-center space-x-4 p-4 ">
         <div className="flex flex-wrap justify-around items-start w-full">
           {calculations.map((calculation) => (
@@ -64,7 +69,7 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
             className="flex  transition-all items-center hover:bg-carbonx-light-green justify-center w-28 h-24 p-4 m-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer"
           >
             <div className=" transition-all">
-              <AddOutline />
+              <PlusIcon className="h-6 w-6" />
             </div>
           </div>
         </div>

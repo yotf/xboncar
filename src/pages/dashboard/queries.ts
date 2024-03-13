@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ProjectData } from "./types";
+import { ProjectData } from "../types";
 
 const projectMockData: ProjectData[] = [
   {
@@ -13,6 +13,26 @@ const projectMockData: ProjectData[] = [
     estimatedER: 3000,
     projectName: "Project Name 1",
     creationDate: "12/01/2024",
+    baseEstimates: [
+      {
+        title: "Baseline 1",
+        calculation: 700,
+      },
+      {
+        title: "Baseline 2",
+        calculation: 800,
+      },
+    ],
+    projectEstimates: [
+      {
+        title: "Project 1",
+        calculation: 200,
+      },
+      {
+        title: "Project 2",
+        calculation: 300,
+      },
+    ],
   },
   {
     id: 1,
@@ -25,6 +45,26 @@ const projectMockData: ProjectData[] = [
     estimatedER: 5000,
     projectName: "Project Name 2",
     creationDate: "15/02/2024",
+    baseEstimates: [
+      {
+        title: "Baseline 1",
+        calculation: 700,
+      },
+      {
+        title: "Baseline 2",
+        calculation: 800,
+      },
+    ],
+    projectEstimates: [
+      {
+        title: "Project 1",
+        calculation: 200,
+      },
+      {
+        title: "Project 2",
+        calculation: 300,
+      },
+    ],
   },
   {
     id: 2,
@@ -38,6 +78,26 @@ const projectMockData: ProjectData[] = [
     estimatedER: 5000,
     projectName: "Project Name 3",
     creationDate: "15/02/2024",
+    baseEstimates: [
+      {
+        title: "Baseline 1",
+        calculation: 700,
+      },
+      {
+        title: "Baseline 2",
+        calculation: 800,
+      },
+    ],
+    projectEstimates: [
+      {
+        title: "Project 1",
+        calculation: 200,
+      },
+      {
+        title: "Project 2",
+        calculation: 300,
+      },
+    ],
   },
   {
     id: 3,
@@ -50,6 +110,26 @@ const projectMockData: ProjectData[] = [
     estimatedER: 5000,
     projectName: "Project Name 4",
     creationDate: "15/02/2024",
+    baseEstimates: [
+      {
+        title: "Baseline 1",
+        calculation: 700,
+      },
+      {
+        title: "Baseline 2",
+        calculation: 800,
+      },
+    ],
+    projectEstimates: [
+      {
+        title: "Project 1",
+        calculation: 200,
+      },
+      {
+        title: "Project 2",
+        calculation: 300,
+      },
+    ],
   },
 ];
 
@@ -64,7 +144,6 @@ const fetchProjectData = async (projectId: number) => {
 };
 
 export const useProjectData = (projectId: number) => {
-  debugger;
   return useQuery({
     queryKey: ["project", projectId],
     queryFn: () => fetchProjectData(projectId),

@@ -1,3 +1,5 @@
+import { Calculation } from "./dashboard/EstimateSection";
+
 export type Stages =
   | "Estimation/Conception"
   | "Certification"
@@ -26,6 +28,8 @@ export interface ProjectBase {
 
 export interface ProjectData extends ProjectBase {
   description: string;
+  baseEstimates: Calculation[];
+  projectEstimates: Calculation[];
 }
 
 export const ProjectTypeShorthand: { [key in ProjectType]: string } = {

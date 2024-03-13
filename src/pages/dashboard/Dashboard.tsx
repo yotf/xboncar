@@ -1,12 +1,11 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TimeLine from "../../components/atoms/TimeLine";
-import { useProjectData } from "../queries";
 import { stages } from "../types";
-import BaselineEstimateSection from "./BaselineEstimateSection";
 import CarbonPriceSection from "./CarbonPriceSection";
-import ProjectEstimateSection from "./ProjectEstimateSection";
+import EstimateSection from "./EstimateSection";
 import SectionCard from "./SectionCard";
+import { useProjectData } from "./queries";
 
 // Reusable card component
 
@@ -70,13 +69,18 @@ const DashboardPage: React.FC = () => {
             <CarbonPriceSection onPriceSelected={(price) => setPrice(price)} />
           </div>
           <div className="flex gap-6 ">
-            <BaselineEstimateSection
+            <EstimateSection
               projectType={projectData?.projectType!}
               onCardSelect={(calc) => setBaseLineEstimate(calc)}
+              calculations={projectData?.baseEstimates || []}
+              title="Baseline Estimation"
             />
-            <ProjectEstimateSection
+
+            <EstimateSection
               projectType={projectData?.projectType!}
               onCardSelect={(calc) => setProjectEstimate(calc)}
+              calculations={projectData?.projectEstimates || []}
+              title="Project Estimation"
             />
           </div>
         </div>
