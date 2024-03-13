@@ -1,6 +1,6 @@
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import toast from "react-hot-toast";
-import { InformationCircle } from "react-ionicons";
 import { Navigate, useLocation } from "react-router-dom";
 
 interface RequireAuthProps {
@@ -15,7 +15,7 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
     // Redirect to the login page and save the current location
     toast.error("You need to be logged in", {
       duration: 4000,
-      icon: <InformationCircle />,
+      icon: <InformationCircleIcon className="w-6 h-6" />,
       id: "must-be-logged-in-toast",
     });
     return <Navigate to="/login" state={{ from: location }} replace />;

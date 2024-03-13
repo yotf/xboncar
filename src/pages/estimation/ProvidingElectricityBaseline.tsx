@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { AddCircleOutline } from "react-ionicons";
 import Accordion from "../../components/atoms/Accordion";
+import AddButton from "../../components/atoms/AddButton";
 import BackButton from "../../components/atoms/BackButton";
 import InputWithLabel from "../../components/atoms/InputWithLabel";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
@@ -129,13 +129,7 @@ const ProvidingElectricityBaseline = () => {
             id="emission-sub"
             name="emission-sub"
           />
-          <AddCircleOutline
-            onClick={addEmissionFactorItem}
-            cssClasses={
-              "scale-150 hover:scale-[1.8] mt-10 transition-all duration-300 ease-in-out cursor-pointer"
-            }
-            color={"gray"}
-          />
+          <AddButton onClick={addEmissionFactorItem} />
         </div>
       ),
     },

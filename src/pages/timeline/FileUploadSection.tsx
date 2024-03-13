@@ -1,6 +1,6 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { CloseOutline } from "react-ionicons";
 
 export interface DropZoneDocument {
   path: string;
@@ -95,7 +95,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
               className=" text-red-500 p-1 "
               onClick={() => onRemoveDocument(doc)}
             >
-              <CloseOutline />
+              <XMarkIcon className="h-6 w-6" />
             </button>
           </div>
         ))}

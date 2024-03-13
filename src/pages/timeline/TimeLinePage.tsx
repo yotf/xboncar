@@ -1,11 +1,11 @@
 import autoAnimate from "@formkit/auto-animate";
+import {
+  InformationCircleIcon,
+  PlusCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import {
-  AddCircleOutline,
-  CloseOutline,
-  InformationCircleOutline,
-} from "react-ionicons";
 import BackButton from "../../components/atoms/BackButton";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import TimeLineHorizontal from "../../components/atoms/TimeLineHorizontal";
@@ -142,7 +142,7 @@ const TimelinePage = () => {
       setCurrentStep(index);
     } else {
       toast.error("Please validate the previous step first", {
-        icon: <InformationCircleOutline />,
+        icon: <InformationCircleIcon className="w-6 h-6" />,
       });
     }
   };
@@ -219,7 +219,7 @@ const TimelinePage = () => {
                     toast.error(
                       "You cannot upload more than 6 documents. Please limit your upload to 6 documents.",
                       {
-                        icon: <InformationCircleOutline />,
+                        icon: <InformationCircleIcon className="w-6 h-6" />,
                       }
                     );
                     return group;
@@ -325,21 +325,16 @@ const TimelinePage = () => {
                 {selectedTimeLineStep.documentGroups.length > 1 && (
                   <button
                     onClick={() => deleteDocumentGroup(group.id)}
-                    className="text-red-500  ml-4 sel justify-self-center  self-center scale-125 "
+                    className="text-red-500  ml-4 sel justify-self-center  self-center  "
                   >
-                    <CloseOutline />
+                    <XMarkIcon className="w-6 h-6 text-gray-600" />
                   </button>
                 )}
               </div>
             ))}
             <div className="  pt-4 flex items-center justify-center">
               <button onClick={addNewDocumentGroup}>
-                <AddCircleOutline
-                  color={"gray"}
-                  cssClasses={
-                    "hover:scale-150 scale-125 transition-all duration-300 cursor-pointer text-xl"
-                  }
-                />
+                <PlusCircleIcon className="w-8 h-8 hover:scale-110 text-gray-400 hover:text-gray-500 transition-all duration-300 cursor-pointer" />
               </button>
             </div>
           </div>
