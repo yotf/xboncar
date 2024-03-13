@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import CustomInput from "../../components/atoms/CustomInput";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
-import { mockLogin } from "../../services/mockServices";
+import { LoginResponse, mockLogin } from "../../services/mockServices";
 import LandingPageLayout from "./LandingPageLayout";
 
 const Login = () => {
@@ -27,7 +27,9 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: (data: FormFields) => mockLogin(data.email, data.password),
     onSuccess: (data) => {
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      const { token, user } = data as LoginResponse;
+      localStorage.setItem("userInfo", JSON.stringify(user));
+      localStorage.setItem("jwtToken", token);
       toast.success("Logged in successfully!", {
         duration: 4000, // Display the toast for 4 seconds
         position: "top-center", // Position it at the top
@@ -41,7 +43,6 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     loginMutation.mutate(data);
-    await new Promise((r) => setTimeout(r, 1000)); //TODO: Remove after connected to server
   };
   return (
     <LandingPageLayout
@@ -66,8 +67,12 @@ const Login = () => {
           error={errors.password}
           id="password"
         />
-        <PrimaryButton disabled={isSubmitting} type="submit" className="w-full">
-          {isSubmitting ? "Loading..." : "Next"}
+        <PrimaryButton
+          disabled={isSubmitting || loginMutation.isPending}
+          type="submit"
+          className="w-full"
+        >
+          {isSubmitting || loginMutation.isPending ? "Loading..." : "Next"}
         </PrimaryButton>
       </form>
       <div className="text-center mt-6">
