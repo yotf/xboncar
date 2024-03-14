@@ -1,7 +1,7 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProjectType, ProjectTypeShorthand } from "../types";
+import { ProjectType, ProjectTypeShorthand } from "../../types";
 import CalculationCard from "./CalculationCard";
 import SectionCard from "./SectionCard";
 

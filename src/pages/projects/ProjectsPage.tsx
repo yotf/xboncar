@@ -7,7 +7,7 @@ import { AgGridReact } from "ag-grid-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
-import { ProjectBase } from "../types";
+import { ProjectBase } from "../../types";
 import "./projectsTableStyles.css";
 import { useProjectsTableData } from "./queries";
 

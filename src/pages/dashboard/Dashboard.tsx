@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TimeLine from "../../components/atoms/TimeLine";
-import { stages } from "../types";
+import { stagesEnum } from "../../types";
 import CarbonPriceSection from "./CarbonPriceSection";
 import EstimateSection from "./EstimateSection";
 import SectionCard from "./SectionCard";
@@ -23,7 +23,7 @@ const DashboardPage: React.FC = () => {
       ? baseLineEstimate - projectEstimate
       : undefined;
 
-  const timelineCurrentStep = stages.findIndex(
+  const timelineCurrentStep = stagesEnum.findIndex(
     (stage) => stage === projectData?.stage
   );
 
@@ -50,7 +50,7 @@ const DashboardPage: React.FC = () => {
             title="Timeline"
             onClick={() => navigate("./timeline")}
           >
-            <TimeLine items={stages} currentStep={timelineCurrentStep} />
+            <TimeLine items={stagesEnum} currentStep={timelineCurrentStep} />
           </SectionCard>
         </div>
         <div className="flex flex-col gap-6">

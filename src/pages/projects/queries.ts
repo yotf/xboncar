@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ProjectBase } from "../types";
+import { ProjectBase } from "../../types";
 
 const projectsTableMockData: ProjectBase[] = [
   {

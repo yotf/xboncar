@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { ProjectData } from "../types";
+import { ProjectData } from "../../types";
 
-const projectMockData: ProjectData[] = [
+export const projectMockData: ProjectData[] = [
   {
     id: 0,
     project: "Switching Fossil Fuels",

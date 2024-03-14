@@ -1,10 +1,10 @@
-type TimeLineItem = {
+export type HorizontalTimelineItem = {
   name: string;
   completed: boolean;
 };
 
 type TimeLineProps = {
-  items: TimeLineItem[];
+  items: HorizontalTimelineItem[];
   currentStep: number;
   onClickItem: (index: number) => void;
 };
@@ -14,6 +14,7 @@ const TimeLineHorizontal: React.FC<TimeLineProps> = ({
   currentStep,
   onClickItem,
 }) => {
+  debugger;
   return (
     <ul className="timeline timeline-horizontal ">
       {items.map((item, index) => {

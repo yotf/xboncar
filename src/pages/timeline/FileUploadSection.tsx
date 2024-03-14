@@ -1,16 +1,9 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { DropZoneDocument } from "../../types";
 
-export interface DropZoneDocument {
-  path: string;
-  name: string;
-  lastModified: number;
-  lastModifiedDate: Date;
-  size: number;
-  type: string;
-  webkitRelativePath: string;
-}
+
 type FileUploadSectionProps = {
   documents?: DropZoneDocument[];
   onRemoveDocument: (doc: DropZoneDocument) => void;
