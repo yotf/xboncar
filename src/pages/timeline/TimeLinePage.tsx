@@ -4,6 +4,7 @@ import {
   PlusCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
@@ -15,10 +16,11 @@ import FileUploadSection from "./FileUploadSection";
 import TimeLineHorizontal, {
   HorizontalTimelineItem,
 } from "./TimeLineHorizontal";
-import { useTimelineStepData } from "./queries";
+import { updateTimelineStepData, useTimelineStepData } from "./queries";
 
 const TimelinePage = () => {
   const { projectId } = useParams();
+  const queryClient = useQueryClient();
 
   const { data: projectData } = useProjectData(Number(projectId || 0));
   const [currentStepData, setCurrentStepData] = useState<TimelineItem | null>(
@@ -28,6 +30,8 @@ const TimelinePage = () => {
   const [currentStep, setCurrentStep] = useState<number>(
     stagesEnum.indexOf(projectData?.stage!)
   );
+
+  const [validateDisabled, setValidateDisabled] = useState<boolean>(false);
 
   debugger;
 
@@ -73,6 +77,24 @@ const TimelinePage = () => {
     parent.current && autoAnimate(parent.current);
   }, [parent]);
 
+  const updateMutation = useMutation({
+    mutationFn: () =>
+      updateTimelineStepData(
+        projectId!,
+        stagesEnum[currentStep],
+        currentStepData!
+      ),
+    onSuccess: (data) => {
+      toast.success("Step validated successfully", {});
+      // queryClient.invalidateQueries({ queryKey: ["timelineStepData"] });
+      setCurrentStepData(data);
+      //queryClient.invalidateQueries({ queryKey: ["projectData", projectId] }); //TODO think whether to use this data or to invalidateQueries and also whether we need to invalidate the projectData
+      //TODO need to make sure that the backend is updating the project stage data
+    },
+    onError: () => {
+      toast.error("Error validating step", {});
+    },
+  });
   const completeCurrentStep = () => {
     setHorizontalTimelineSteps((prev) =>
       prev.map((step, index) => {
@@ -81,11 +103,14 @@ const TimelinePage = () => {
         }
         return step;
       })
-    );
+    ); // TODO this will not be needed if we invalidate the projectData
+    updateMutation.mutate();
+
     if (currentStep === horizontalTimelineSteps.length - 1) {
-      return;
+      setValidateDisabled(true);
+    } else {
+      setCurrentStep((prev) => prev + 1);
     }
-    setCurrentStep((prev) => prev + 1);
   };
 
   const onClickItem = (index: number) => {
@@ -266,6 +291,7 @@ const TimelinePage = () => {
           <PrimaryButton
             className="w-[169px] h-[63px]"
             onClick={completeCurrentStep}
+            disabled={validateDisabled}
           >
             <p className="text-lg"> Validate</p>
           </PrimaryButton>

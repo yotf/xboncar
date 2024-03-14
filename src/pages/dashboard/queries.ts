@@ -145,7 +145,7 @@ const fetchProjectData = async (projectId: number) => {
 
 export const useProjectData = (projectId: number) => {
   return useQuery({
-    queryKey: ["project", projectId],
+    queryKey: ["projectData", projectId],
     queryFn: () => fetchProjectData(projectId),
     enabled: projectId !== undefined,
   });

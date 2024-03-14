@@ -29,13 +29,13 @@ const timelineStepsMockData: TimelineItem[] = [
       {
         id: 0,
         name: "Group of Document Certification 1",
-    
+
         documents: [],
       },
       {
         id: 1,
         name: "Group of Document Certification 2",
-   
+
         documents: [],
       },
     ],
@@ -48,13 +48,13 @@ const timelineStepsMockData: TimelineItem[] = [
       {
         id: 0,
         name: "Group of Document Monitoring 1",
-    
+
         documents: [],
       },
       {
         id: 1,
         name: "Group of Document Monitoring 2",
-    
+
         documents: [],
       },
     ],
@@ -102,4 +102,17 @@ export const useTimelineStepData = (
     queryKey: ["timelineStepData", projectId, timelineStepId],
     queryFn: () => fetchTimelineStep(projectId, timelineStepId),
   });
+};
+
+export const updateTimelineStepData = async (
+  projectId: string,
+  timelineStepId: Stages,
+  data: TimelineItem
+) => {
+  return Promise.resolve(data); //TODO think whether to use this data or to invalidateQueries
+  // const response = await ApiService.put<TimelineItem>(
+  //   `/timeline/${projectId}/step/${timelineStepId}`,
+  //   data
+  // );
+  // return response.data;
 };
