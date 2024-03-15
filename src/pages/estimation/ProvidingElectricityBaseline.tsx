@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import Accordion from "../../components/atoms/Accordion";
 import AddButton from "../../components/atoms/AddButton";
 import BackButton from "../../components/atoms/BackButton";
@@ -7,25 +8,66 @@ import PrimaryButton from "../../components/atoms/PrimaryButton";
 import Select from "../../components/atoms/Select";
 import TimeLine from "../../components/atoms/TimeLine";
 import FuelForm from "./FuelForm";
+type Unit = "tCO2/Mwh";
+
+type AnnualEnergyOutputOfProjectInstallationFields = {
+  qkj: number;
+  efgrid: number;
+  unit: Unit;
+};
+
+type MaximumEnergySuppliedByAlternativeFields = {
+  capmax: number;
+  tmax: number;
+};
+
+type HistoricEnergySuppliedByPriorPlantFields = {
+  qy1: number;
+  qy2: number;
+  qy3: number;
+};
+
+export type FuelFormFields = {
+  name: string;
+  ef: number;
+  fc_pj: number;
+  ncv_pj: number;
+  ef_co2_ff: number;
+  q_bsl: number;
+  e_bsl: number;
+  e_pj: number;
+};
+
+// type BaselineEmissionFactorFields = {
+// fuels: FuelFormFields[];
+// };
+type ProvidingElectricityFormFields = {
+  annualEnergyOutputOfProjectInstallation: AnnualEnergyOutputOfProjectInstallationFields;
+  maximumEnergySuppliedByAlternative: MaximumEnergySuppliedByAlternativeFields;
+  historicEnergySuppliedByPriorPlant: HistoricEnergySuppliedByPriorPlantFields;
+  baselineEmissionFactor: FuelFormFields[];
+};
 
 const ProvidingElectricityBaseline = () => {
-  const [currentStep, setCurrentStep] = useState<number>(3);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const [emissionFactorItems, setEmissionFactorItems] = useState<any[]>([
     {
       title: "Fuel 1",
-      content: <FuelForm />,
+      content: <FuelForm prefix="baselineEmissionFactor[0]" />,
     },
     {
       title: "Fuel 2",
-      content: <FuelForm />,
+      content: <FuelForm prefix="baselineEmissionFactor[1]" />,
     },
   ]);
+
+  const formMethods = useForm<ProvidingElectricityFormFields>();
   const addEmissionFactorItem = () => {
     setEmissionFactorItems((prev) => [
       ...prev,
       {
         title: `Fuel ${prev.length + 1}`,
-        content: <FuelForm />,
+        content: <FuelForm prefix={`baselineEmissionFactor[${prev.length}`} />,
       },
     ]);
   };
@@ -42,6 +84,9 @@ const ProvidingElectricityBaseline = () => {
               </p>
             }
             id="qkj"
+            {...formMethods.register(
+              "annualEnergyOutputOfProjectInstallation.qkj"
+            )}
           />
           <InputWithLabel
             label={
@@ -50,11 +95,17 @@ const ProvidingElectricityBaseline = () => {
               </p>
             }
             id="efgrid"
+            {...formMethods.register(
+              "annualEnergyOutputOfProjectInstallation.efgrid"
+            )}
           />
 
           <Select
             options={[{ label: "tCO2/Mwh", value: "" }]}
             className="w-40"
+            {...formMethods.register(
+              "annualEnergyOutputOfProjectInstallation.unit"
+            )}
           />
         </div>
       ),
@@ -71,6 +122,9 @@ const ProvidingElectricityBaseline = () => {
             }
             id="capmax"
             endPlaceholder="MW"
+            {...formMethods.register(
+              "maximumEnergySuppliedByAlternative.capmax"
+            )}
           />
           <InputWithLabel
             label={
@@ -80,6 +134,7 @@ const ProvidingElectricityBaseline = () => {
             }
             id="efalt"
             endPlaceholder="hours"
+            {...formMethods.register("maximumEnergySuppliedByAlternative.tmax")}
           />
           <div></div>
         </div>
@@ -97,6 +152,7 @@ const ProvidingElectricityBaseline = () => {
             }
             id="qy1"
             endPlaceholder="MWh"
+            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy1")}
           />
           <InputWithLabel
             label={
@@ -106,6 +162,7 @@ const ProvidingElectricityBaseline = () => {
             }
             id="qy2"
             endPlaceholder="MWh"
+            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy2")}
           />
           <InputWithLabel
             label={
@@ -115,6 +172,7 @@ const ProvidingElectricityBaseline = () => {
             }
             id="qy3"
             endPlaceholder="MWh"
+            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy3")}
           />
         </div>
       ),
@@ -136,37 +194,50 @@ const ProvidingElectricityBaseline = () => {
   ];
 
   return (
-    <div className="flex container mx-auto overflow-hidden">
-      <div className="flex w-1/4 flex-col gap-20 ">
-        <div className="-ml-4">
-          <BackButton label="Return to Dashboard" />
+    <FormProvider {...formMethods}>
+      <form
+        className="flex container mx-auto overflow-hidden"
+        onSubmit={formMethods.handleSubmit((data) => {
+          console.log(formMethods.formState.errors);
+          console.log(data);
+
+          setCurrentStep(currentStep + 1);
+        })}
+      >
+        <div className="flex w-1/4 flex-col gap-20 ">
+          <div className="-ml-4">
+            <BackButton label="Return to Dashboard" />
+          </div>
+
+          <TimeLine
+            items={[
+              "Projects output",
+              "Maximum alternative supply",
+              "Historic supply",
+              "Baseline emission factor",
+            ]}
+            currentStep={currentStep}
+          />
+
+          <PrimaryButton
+            className={` 
+               w-40 mt-auto ml-8`}
+            type="submit"
+          >
+            {" "}
+            Validate
+          </PrimaryButton>
         </div>
 
-        <TimeLine
-          items={[
-            "Projects output",
-            "Maximum alternative supply",
-            "Historic supply",
-            "Baseline emission factor",
-          ]}
-          currentStep={currentStep}
+        <Accordion
+          items={accordionItems}
+          className="flex-1 mt-4"
+          id="estimate-accordion"
+          name="estimate-accordion"
+          openIndex={currentStep}
         />
-        <PrimaryButton
-          className={` ${
-            currentStep != 3 ? "hidden" : ""
-          } w-40 mt-auto self-center`}
-        >
-          {" "}
-          Validate
-        </PrimaryButton>
-      </div>
-      <Accordion
-        items={accordionItems}
-        className="flex-1 mt-4"
-        id="estimate-accordion"
-        name="estimate-accordion"
-      />
-    </div>
+      </form>
+    </FormProvider>
   );
 };
 
