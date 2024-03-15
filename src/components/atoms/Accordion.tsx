@@ -10,6 +10,7 @@ type AccordionProps = {
   className?: string;
   id: string;
   name: string;
+  openIndex?: number;
 };
 
 const Accordion: React.FC<AccordionProps> = ({
@@ -17,17 +18,32 @@ const Accordion: React.FC<AccordionProps> = ({
   className,
   id,
   name,
+  openIndex,
 }) => {
   return (
-    <div className={`w-[90%] ${className || ""}`}>
+    <div className={`w-[100%] ${className || ""}`}>
       {items.map((item, index) => (
-        <div key={index} className="collapse collapse-arrow rounded-none">
+        <div key={index} className="collapse collapse-arrow rounded-none ">
           <input
             type="radio"
             name={name}
             id={`${id}-accordion-${index}`}
             className="peer"
             defaultChecked={index === 0}
+            {...(openIndex !== undefined &&
+              openIndex <= items.length - 1 && {
+                checked: index === openIndex,
+              })}
+            // {...(openIndex !== undefined &&
+            //   {
+            //     // onClick: (e) => e.preventDefault(),
+            //     // onChange: (e) => e.preventDefault(),
+            //     // onSelect: (e) => e.preventDefault(),
+            //   })}
+
+            //checked={openIndex !== undefined ? index === openIndex : undefined}
+            //checked={index === 2}
+            //   onChange={() => setOpenIndex(index)}
           />
           <label
             htmlFor={`${id}-accordion-${index}`}
