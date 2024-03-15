@@ -7,33 +7,22 @@ type OptionType = {
   label: string;
 };
 
-type CustomSelectProps = Omit<
-  React.SelectHTMLAttributes<HTMLSelectElement>,
-  "onChange"
-> & {
+type CustomSelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   options: OptionType[];
   error?: FieldError;
   selectClassName?: string;
-  onChange?: (value: string) => void; // You can define your own onChange type if needed
 };
 
 const CustomSelect = React.forwardRef<HTMLSelectElement, CustomSelectProps>(
   (
-    { className, error, selectClassName, options, onChange, id, ...rest },
+    { className, error, selectClassName, options, id, ...rest },
     ref
   ) => {
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      if (onChange) {
-        onChange(event.target.value);
-      }
-    };
-
     return (
       <div className={`${className || ""}`}>
         <select
           ref={ref}
           id={id}
-          onChange={handleChange}
           className={`mt-1 block w-full rounded-md ${selectClassName || ""}  ${
             error
               ? "border-red-500 focus:ring-red-400 focus:border-red-500"
