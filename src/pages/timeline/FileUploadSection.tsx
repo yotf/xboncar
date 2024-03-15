@@ -1,8 +1,7 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { DropZoneDocument } from "../../types";
-
 
 type FileUploadSectionProps = {
   documents?: DropZoneDocument[];
@@ -20,6 +19,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles, fileRejections) => {
+      debugger;
       setErrorMessage(null);
       if (fileRejections.length > 0) {
         const { errors } = fileRejections[0];
@@ -83,13 +83,18 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
             key={doc.name}
             className="mb-2 flex items-center w-full justify-between "
           >
-            <span className="mr-2 ">{doc.name}</span>
-            <button
-              className=" text-red-500 p-1 "
-              onClick={() => onRemoveDocument(doc)}
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
+            <span className="mr-2 truncate">{doc.name}</span>
+            <div className="flex items-center">
+              <a href={doc.path} download className="text-blue-500 p-1 mr-2">
+                <ArrowDownTrayIcon className="h-6 w-6" />
+              </a>
+              <button
+                className="text-red-500 p-1"
+                onClick={() => onRemoveDocument(doc)}
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
           </div>
         ))}
       </div>
