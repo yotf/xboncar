@@ -6,10 +6,11 @@ import BackButton from "../../components/atoms/BackButton";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import FuelForm from "./FuelForm";
 import { FuelFormFields } from "./ProvidingElectricityBaseline";
+import { useUpdateBaselineEstimationMutation } from "./queries";
 
 type BaselineProps = { title: string };
 
-type BaselineCommonFormFields = {
+export type BaselineCommonFormFields = {
   baselineFossilFuels: FuelFormFields[];
 };
 
@@ -48,14 +49,18 @@ const BaselineCommon: React.FC<BaselineProps> = ({ title }) => {
     },
   ];
 
+  const baselineMutation = useUpdateBaselineEstimationMutation();
+
+  const onSubmit = (data: BaselineCommonFormFields) => {
+    console.log(data);
+    baselineMutation.mutate(data);
+  };
+
   return (
     <FormProvider {...formMethods}>
       <form
-        className="flex container mx-auto overflow-hidden"
-        onSubmit={formMethods.handleSubmit((data) => {
-          console.log(formMethods.formState.errors);
-          console.log(data);
-        })}
+        className="flex px-4 mx-auto overflow-hidden "
+        onSubmit={formMethods.handleSubmit(onSubmit)}
       >
         <div className="flex w-1/6 flex-col gap-20 ">
           <div className="-ml-4">
@@ -66,9 +71,9 @@ const BaselineCommon: React.FC<BaselineProps> = ({ title }) => {
             className={` 
                w-40 mt-auto ml-8`}
             type="submit"
+            disabled={baselineMutation.isPending}
           >
-            {" "}
-            Validate
+            {baselineMutation.isPending ? "Updating..." : "Validate"}
           </PrimaryButton>
         </div>
 

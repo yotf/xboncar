@@ -8,6 +8,7 @@ import PrimaryButton from "../../components/atoms/PrimaryButton";
 import Select from "../../components/atoms/Select";
 import TimeLine from "../../components/atoms/TimeLine";
 import FuelForm from "./FuelForm";
+import { useUpdateBaselineEstimationMutation } from "./queries";
 type Unit = "tCO2/Mwh";
 
 type AnnualEnergyOutputOfProjectInstallationFields = {
@@ -41,7 +42,7 @@ export type FuelFormFields = {
 // type BaselineEmissionFactorFields = {
 // fuels: FuelFormFields[];
 // };
-type ProvidingElectricityFormFields = {
+export type ProvidingElectricityFormFields = {
   annualEnergyOutputOfProjectInstallation: AnnualEnergyOutputOfProjectInstallationFields;
   maximumEnergySuppliedByAlternative: MaximumEnergySuppliedByAlternativeFields;
   historicEnergySuppliedByPriorPlant: HistoricEnergySuppliedByPriorPlantFields;
@@ -193,16 +194,19 @@ const ProvidingElectricityBaseline = () => {
     },
   ];
 
+  const baselineMutation = useUpdateBaselineEstimationMutation();
+
+  const onSubmit = (data: ProvidingElectricityFormFields) => {
+    console.log(data);
+    baselineMutation.mutate(data);
+    setCurrentStep(currentStep + 1);
+  };
+
   return (
     <FormProvider {...formMethods}>
       <form
         className="flex container mx-auto overflow-hidden"
-        onSubmit={formMethods.handleSubmit((data) => {
-          console.log(formMethods.formState.errors);
-          console.log(data);
-
-          setCurrentStep(currentStep + 1);
-        })}
+        onSubmit={formMethods.handleSubmit(onSubmit)}
       >
         <div className="flex w-1/4 flex-col gap-20 ">
           <div className="-ml-4">
@@ -223,9 +227,9 @@ const ProvidingElectricityBaseline = () => {
             className={` 
                w-40 mt-auto ml-8`}
             type="submit"
+            disabled={baselineMutation.isPending}
           >
-            {" "}
-            Validate
+            {baselineMutation.isPending ? "Updating..." : "Validate"}
           </PrimaryButton>
         </div>
 

@@ -1,17 +1,22 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 import Accordion, { AccordionItem } from "../../components/atoms/Accordion";
 import AddButton from "../../components/atoms/AddButton";
 import BackButton from "../../components/atoms/BackButton";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import ProjectFuelForm, { ProjectFuelFormFields } from "./ProjectFuelForm";
+import { updateProjectEstimationData } from "./queries";
 
-type ProjectEstimationFormFields = {
+export type ProjectEstimationFormFields = {
   maximumEnergySuppliedByAlternative: ProjectFuelFormFields[];
 };
 
 const ProjectEstimation = () => {
   const formMethods = useForm<ProjectEstimationFormFields>();
+
   const [fuelItems, setFuelItems] = useState<AccordionItem[]>([
     {
       title: "Fuel 1",
@@ -41,6 +46,27 @@ const ProjectEstimation = () => {
     ]);
   };
 
+  const { projectId } = useParams();
+
+  const queryClient = useQueryClient();
+
+  const updateProjecEstimationMutation = useMutation({
+    mutationFn: (data: ProjectEstimationFormFields) =>
+      updateProjectEstimationData(data, projectId!),
+    onSuccess: (data) => {
+      toast.success("Project estimation data updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["projectData", projectId] });
+    },
+    onError: (error) => {
+      toast.error("Error updating project estimation data");
+    },
+  });
+
+  const onSubmit = (data: ProjectEstimationFormFields) => {
+    console.log(data);
+    updateProjecEstimationMutation.mutate(data);
+  };
+
   const accordionItems: AccordionItem[] = [
     {
       title: "Maximum energy supplied by alternative",
@@ -57,10 +83,7 @@ const ProjectEstimation = () => {
     <FormProvider {...formMethods}>
       <form
         className="flex  mx-auto px-4 "
-        onSubmit={formMethods.handleSubmit((data) => {
-          console.log(formMethods.formState.errors);
-          console.log(data);
-        })}
+        onSubmit={formMethods.handleSubmit(onSubmit)}
       >
         <div className="flex w-1/6 flex-col gap-20 ">
           <div className="-ml-4">
@@ -71,9 +94,11 @@ const ProjectEstimation = () => {
             className={` 
                w-40 mt-auto ml-8`}
             type="submit"
+            disabled={updateProjecEstimationMutation.isPending}
           >
-            {" "}
-            Validate
+            {updateProjecEstimationMutation.isPending
+              ? "Updating..."
+              : "Validate"}
           </PrimaryButton>
         </div>
 

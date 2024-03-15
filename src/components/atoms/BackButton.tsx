@@ -7,6 +7,7 @@ const BackButton: React.FC<{ label: string; to?: string }> = ({ label }) => {
     <button
       onClick={() => navigate(-1)}
       className="text-green-600 flex gap-2 hover:text-green-800 transition duration-300 ease-in-out  font-semibold self-start m-5 -mr-5"
+      type="button"
     >
       <ChevronLeftIcon className="w-6 h-6  text-inherit" /> {label}
     </button>
