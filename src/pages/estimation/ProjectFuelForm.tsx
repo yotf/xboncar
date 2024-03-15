@@ -1,9 +1,28 @@
+import { useFormContext } from "react-hook-form";
 import InputWithLabel from "../../components/atoms/InputWithLabel";
 
-const FuelForm = () => {
+export type ProjectFuelFormFields = {
+  name: string;
+  ncv_pj: number;
+  fc_pj: number;
+  ef_co2_: number;
+};
+
+type ProjectFuelFormProps = {
+  prefix: string;
+};
+
+const ProjectFuelForm: React.FC<ProjectFuelFormProps> = ({ prefix }) => {
+  const { register } = useFormContext();
   return (
     <div className="grid grid-cols-4 gap-6">
-      <InputWithLabel label={<p>Name</p>} id="name" placeholder="Fuel 1" />
+      <InputWithLabel
+        label={<p>Name</p>}
+        id="name"
+        placeholder="Fuel 1"
+        {...register(`${prefix}.name`)}
+      />
+
       <InputWithLabel
         label={
           <p>
@@ -12,6 +31,7 @@ const FuelForm = () => {
         }
         id="ncv_pj"
         endPlaceholder="TJ/kg or m3"
+        {...register(`${prefix}.ncv_pj`)}
       />
 
       <InputWithLabel
@@ -22,6 +42,7 @@ const FuelForm = () => {
         }
         id="fc_pj"
         endPlaceholder="kg or m3"
+        {...register(`${prefix}.fc_pj`)}
       />
 
       <InputWithLabel
@@ -32,9 +53,10 @@ const FuelForm = () => {
         }
         id="ef_co2_"
         endPlaceholder="tCO2/kJ"
+        {...register(`${prefix}.ef_co2_`)}
       />
     </div>
   );
 };
 
-export default FuelForm;
+export default ProjectFuelForm;
