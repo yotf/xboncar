@@ -21,7 +21,19 @@ const schema = z
     organization: z.string().min(2),
     phoneNumber: z.string().regex(phoneRegex, "Invalid phone number"),
     email: z.string().email(),
-    password: z.string().min(8),
+    password: z
+      .string()
+      .min(12, { message: "Password must be at least 12 characters long." })
+      .regex(/[A-Z]/, {
+        message: "Password must include at least one uppercase letter.",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must include at least one lowercase letter.",
+      })
+      .regex(/[0-9]/, { message: "Password must include at least one number." })
+      .regex(/[@$!%*#?&]/, {
+        message: "Password must include at least one special character.",
+      }),
     passwordConfirmation: z.string().min(8),
     termsAndConditions: z.boolean(),
   })
@@ -140,8 +152,6 @@ const SignUp = () => {
         >
           {isSubmitting || signupMutation.isPending ? "Loading..." : "Next"}
         </PrimaryButton>
-
-     
       </form>
       <div className="text-center mt-6">
         <Link to="/login" className="">
