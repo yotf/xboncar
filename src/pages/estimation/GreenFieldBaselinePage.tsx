@@ -1,4 +1,4 @@
-import BaselineCommon from "./GreenFieldAndExistingFacilityBaselineLayout";
+import BaselineCommon from "./GreenFieldAndExistingFacilityBaselineLogic";
 
 const GreenFieldBaseline = () => {
   return <BaselineCommon title="Baseline Fossil Fuels" />;

@@ -57,6 +57,7 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
               calculation={calculation.calculation}
               isSelected={selectedCard === calculation.title}
               onClick={() => handleClick(calculation.title)}
+              key={calculation.title}
             />
           ))}
 
