@@ -48,7 +48,7 @@ const tabs: (keyof ProvidingElectricityFormFields)[] = [
   "baselineEmissionFactor",
 ];
 
-const numberRequiredSchema = z.number({
+export const numberRequiredSchema = z.number({
   errorMap: () => ({ message: "Number Required" }),
 });
 
@@ -120,7 +120,6 @@ const defaultValues: ProvidingElectricityFormFields = {
 
 const ProvidingElectricityBaseline = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [openTab, setOpenTab] = useState<number>(1);
   const [emissionFactorItems, setEmissionFactorItems] = useState<any[]>([
     {
       title: "Fuel 1",
@@ -315,27 +314,26 @@ const ProvidingElectricityBaseline = () => {
 
   const validateAndProceed = async () => {
     // Check if the currentStep index exists in the steps array to avoid indexing errors
-    if (currentStep < tabs.length) {
-      const isValid = await formMethods.trigger();
+    // if (currentStep < tabs.length) {
+    const isValid = await formMethods.trigger();
 
-      if (isValid) {
-        navigate(-1);
-        toast.success("Data is valid");
-        // If the current step is valid, proceed to the next step or handle form submission
-        // if (currentStep < tabs.length - 1) {
-        //   setCurrentStep(currentStep + 1); // Move to the next step
-        //     } else {
-        //       // This is the final step, proceed with form submission
-        //       //formMethods.handleSubmit(onSubmit)(); TODO: Uncomment this when adding the Save button
-        //     }
-        //   }
-        // } else {
-        //   console.warn("Step index out of bounds");
-        // }
-      } else {
-        //const errorFields = Object.keys(formMethods.formState.errors);
-        toast.error(`Please fill in all the required fields`);
-      }
+    if (isValid) {
+      navigate(-1);
+      toast.success("Data is valid");
+      // If the current step is valid, proceed to the next step or handle form submission
+      // if (currentStep < tabs.length - 1) {
+      //   setCurrentStep(currentStep + 1); // Move to the next step
+      //     } else {
+      //       // This is the final step, proceed with form submission
+      //       //formMethods.handleSubmit(onSubmit)(); TODO: Uncomment this when adding the Save button
+      //     }
+      //   }
+      // } else {
+      //   console.warn("Step index out of bounds");
+      // }
+    } else {
+      //const errorFields = Object.keys(formMethods.formState.errors);
+      toast.error(`Please fill in all the required fields`);
     }
   };
 
