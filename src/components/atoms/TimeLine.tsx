@@ -9,7 +9,6 @@ const TimeLine: React.FC<TimeLineProps> = ({ items, currentStep }) => {
       {items.map((item, index) => {
         const isCurrent = index === currentStep;
         const isCompleted = index < currentStep;
-        
 
         const isLast = index === items.length - 1;
         return (
@@ -17,10 +16,10 @@ const TimeLine: React.FC<TimeLineProps> = ({ items, currentStep }) => {
             <div
               className={`relative  ${isLast ? " after:hidden" : ""} ${
                 isCompleted ? "after:bg-carbonx-green" : "after:bg-gray-200"
-              } after:absolute after:top-8  after:h-[18px] after:start-[16px] after:w-[2px] after:-translate-x-[0.5px]  `}
+              } after:absolute after:top-8  after:transition-all after:h-[18px] after:start-[16px] after:w-[2px] after:-translate-x-[0.5px]  `}
             >
               <div
-                className={`w-8 h-8 rounded-full border-2 flex items-center justify-center  ${
+                className={`w-8 h-8 rounded-full transition-all border-2 flex items-center justify-center  ${
                   isCompleted || isCurrent
                     ? ` border-carbonx-green border-[7px]`
                     : `border-gray-200 border-[3px]`
@@ -43,7 +42,11 @@ const TimeLine: React.FC<TimeLineProps> = ({ items, currentStep }) => {
               </div>
             </div>
 
-            <div className={`ml-3  font text-lg  `}>{item}</div>
+            <div
+              className={`ml-3  font text-lg  overflow-ellipsis whitespace-nowrap`}
+            >
+              {item}
+            </div>
           </div>
         );
       })}

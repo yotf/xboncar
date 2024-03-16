@@ -30,19 +30,11 @@ const Accordion: React.FC<AccordionProps> = ({
             id={`${id}-accordion-${index}`}
             className="peer"
             defaultChecked={index === 0}
-            {...(openIndex !== undefined &&
-              openIndex <= items.length - 1 && {
-                checked: index === openIndex,
-              })}
             // {...(openIndex !== undefined &&
-            //   {
-            //     // onClick: (e) => e.preventDefault(),
-            //     // onChange: (e) => e.preventDefault(),
-            //     // onSelect: (e) => e.preventDefault(),
+            //   openIndex <= items.length - 1 && {
+            //     checked: index === openIndex,
             //   })}
 
-            //checked={openIndex !== undefined ? index === openIndex : undefined}
-            //checked={index === 2}
             //   onChange={() => setOpenIndex(index)}
           />
           <label

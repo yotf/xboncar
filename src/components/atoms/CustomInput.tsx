@@ -15,6 +15,7 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
         <input
           ref={ref}
           id={id}
+          type={rest.type || "text"}
           className={`mt-1 block w-full rounded-md ${inputClassName || ""}  ${
             error
               ? "border-red-500 focus:ring-red-400 focus:border-red-500"
