@@ -4,8 +4,8 @@ import Accordion from "../../components/atoms/Accordion";
 import AddButton from "../../components/atoms/AddButton";
 import BackButton from "../../components/atoms/BackButton";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
-import FuelForm from "./FuelForm";
-import { FuelFormFields } from "./ProvidingElectricityBaseline";
+import FuelForm, { FuelFormFields } from "./FuelForm";
+
 import { useUpdateBaselineEstimationMutation } from "./queries";
 
 type BaselineProps = { title: string };
@@ -19,11 +19,11 @@ const BaselineCommon: React.FC<BaselineProps> = ({ title }) => {
   const [emissionFactorItems, setEmissionFactorItems] = useState<any[]>([
     {
       title: "Fuel 1",
-      content: <FuelForm prefix="baselineFossilFuels[0]" />,
+      content: <FuelForm prefix="baselineFossilFuels[0]" className="" />,
     },
     {
       title: "Fuel 2",
-      content: <FuelForm prefix="baselineFossilFuels[1]" />,
+      content: <FuelForm prefix="baselineFossilFuels[1]" className="" />,
     },
   ]);
 
@@ -59,7 +59,7 @@ const BaselineCommon: React.FC<BaselineProps> = ({ title }) => {
   return (
     <FormProvider {...formMethods}>
       <form
-        className="flex px-4 mx-auto overflow-hidden "
+        className="flex w-full px-4 md:px-8 lg:px-16 mx-auto flex-col lg:flex-row"
         onSubmit={formMethods.handleSubmit(onSubmit)}
       >
         <div className="flex w-1/6 flex-col gap-20 ">
@@ -78,7 +78,7 @@ const BaselineCommon: React.FC<BaselineProps> = ({ title }) => {
         </div>
 
         <Accordion
-          className="mx-8 mt-4 flex-1"
+          className="mx-8 mt-4 flex-1 "
           items={accordionItems}
           id="existing-facility"
           name="existing-facility"

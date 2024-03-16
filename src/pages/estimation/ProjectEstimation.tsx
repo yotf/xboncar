@@ -82,7 +82,7 @@ const ProjectEstimation = () => {
   return (
     <FormProvider {...formMethods}>
       <form
-        className="flex  mx-auto px-4 "
+        className="flex w-full px-4 md:px-8 lg:px-16 mx-auto flex-col lg:flex-row "
         onSubmit={formMethods.handleSubmit(onSubmit)}
       >
         <div className="flex w-1/6 flex-col gap-20 ">

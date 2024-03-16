@@ -39,7 +39,7 @@ const DashboardPage: React.FC = () => {
             <div className="flex flex-col gap-2 h-[214px] ">
               <p className="">{projectData?.projectType}</p>
               <p className="border-bottom">{projectData?.stage} </p>
-              <p className="block w-60 border-t-2 pt-2 mt-auto text-[14px] ">
+              <p className="block w-60 border-t-2 pt-2 mt-auto text-[14px]  ">
                 {projectData?.description}
               </p>
             </div>
