@@ -21,7 +21,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 }) => {
   return (
     <button
-      type={type}
+      type={type ?? "button"}
       disabled={disabled}
       className={`flex justify-center btn btn-primary ${className}`}
       onClick={onClick}

@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { get, useFormContext } from "react-hook-form";
 import InputWithLabel from "../../components/atoms/InputWithLabel";
 
 type FuelFormProps = {
@@ -17,8 +17,12 @@ export type FuelFormFields = {
 };
 
 const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
-  const { register } = useFormContext();
-
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  const error = get(errors, prefix);
+ 
   return (
     <div className={`grid grid-cols-3 gap-6 ${className ?? ""} `}>
       <InputWithLabel
@@ -38,7 +42,9 @@ const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
         type="number"
         defaultValue={0}
         endPlaceholder="tCO2/MWh"
-        {...register(`${prefix}.ncv_bsl`)}
+        {...register(`${prefix}.ncv_bsl`, { valueAsNumber: true })}
+        error={error?.ncv_bsl}
+        // error={}
       />
       <InputWithLabel
         label={
@@ -50,7 +56,8 @@ const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
         endPlaceholder="kg or m3"
         defaultValue={0}
         type="number"
-        {...register(`${prefix}.fc_pj`)}
+        {...register(`${prefix}.fc_pj`, { valueAsNumber: true })}
+        error={error?.fc_pj}
       />
       <InputWithLabel
         label={
@@ -62,7 +69,8 @@ const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
         type="number"
         endPlaceholder="TJ/kg or m3"
         defaultValue={0}
-        {...register(`${prefix}.ncv_pj`)}
+        {...register(`${prefix}.ncv_pj`, { valueAsNumber: true })}
+        error={error?.ncv_pj}
       />
       <InputWithLabel
         label={
@@ -74,7 +82,8 @@ const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
         type="number"
         endPlaceholder="tCO2/kg"
         defaultValue={0}
-        {...register(`${prefix}.ef_co2_ff`)}
+        {...register(`${prefix}.ef_co2_ff`, { valueAsNumber: true })}
+        error={error?.ef_co2_ff}
       />
       <InputWithLabel
         label={
@@ -86,7 +95,8 @@ const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
         type="number"
         endPlaceholder="MWh"
         defaultValue={0}
-        {...register(`${prefix}.q_bsl`)}
+        {...register(`${prefix}.q_bsl`, { valueAsNumber: true })}
+        error={error?.q_bsl}
       />
       <InputWithLabel
         label={
@@ -97,7 +107,8 @@ const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
         id="e_bsl"
         type="number"
         defaultValue={0}
-        {...register(`${prefix}.e_bsl`)}
+        {...register(`${prefix}.e_bsl`, { valueAsNumber: true })}
+        error={error?.e_bsl}
       />
       <InputWithLabel
         label={
@@ -108,7 +119,8 @@ const FuelForm: React.FC<FuelFormProps> = ({ prefix, className }) => {
         id="e_pj"
         type="number"
         defaultValue={0}
-        {...register(`${prefix}.e_pj`)}
+        {...register(`${prefix}.e_pj`, { valueAsNumber: true })}
+        error={error?.e_pj}
       />
     </div>
   );

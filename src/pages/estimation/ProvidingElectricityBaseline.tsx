@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import Accordion from "../../components/atoms/Accordion";
 import AddButton from "../../components/atoms/AddButton";
@@ -46,8 +48,79 @@ const tabs: (keyof ProvidingElectricityFormFields)[] = [
   "baselineEmissionFactor",
 ];
 
+const numberRequiredSchema = z.number({
+  errorMap: () => ({ message: "Number Required" }),
+});
+
+const schema = z.object({
+  annualEnergyOutputOfProjectInstallation: z.object({
+    qkj: numberRequiredSchema,
+    efgrid: numberRequiredSchema,
+  }),
+  maximumEnergySuppliedByAlternative: z.object({
+    capmax: numberRequiredSchema,
+    tmax: numberRequiredSchema,
+  }),
+  historicEnergySuppliedByPriorPlant: z.object({
+    qy1: numberRequiredSchema,
+    qy2: numberRequiredSchema,
+    qy3: numberRequiredSchema,
+  }),
+  baselineEmissionFactor: z.array(
+    z.object({
+      name: z.string(),
+      ncv_bsl: numberRequiredSchema,
+      fc_pj: numberRequiredSchema,
+      ncv_pj: numberRequiredSchema,
+      ef_co2_ff: numberRequiredSchema,
+      q_bsl: numberRequiredSchema,
+      e_bsl: numberRequiredSchema,
+      e_pj: numberRequiredSchema,
+    })
+  ),
+});
+const defaultValues: ProvidingElectricityFormFields = {
+  annualEnergyOutputOfProjectInstallation: {
+    qkj: 0,
+    efgrid: 0,
+    unit: "tCO2/Mwh",
+  },
+  maximumEnergySuppliedByAlternative: {
+    capmax: 0,
+    tmax: 0,
+  },
+  historicEnergySuppliedByPriorPlant: {
+    qy1: 0,
+    qy2: 0,
+    qy3: 0,
+  },
+  baselineEmissionFactor: [
+    {
+      name: "",
+      ncv_bsl: 0,
+      fc_pj: 0,
+      ncv_pj: 0,
+      ef_co2_ff: 0,
+      q_bsl: 0,
+      e_bsl: 0,
+      e_pj: 0,
+    },
+    {
+      name: "",
+      ncv_bsl: 0,
+      fc_pj: 0,
+      ncv_pj: 0,
+      ef_co2_ff: 0,
+      q_bsl: 0,
+      e_bsl: 0,
+      e_pj: 0,
+    },
+  ],
+};
+
 const ProvidingElectricityBaseline = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
+  const [openTab, setOpenTab] = useState<number>(1);
   const [emissionFactorItems, setEmissionFactorItems] = useState<any[]>([
     {
       title: "Fuel 1",
@@ -62,83 +135,22 @@ const ProvidingElectricityBaseline = () => {
   //   defaultValues: isLoading ? {} : formData //if we need pre-filled data
   // });
 
-  const schema = z.object({
-    annualEnergyOutputOfProjectInstallation: z.object({
-      qkj: z.number().min(0, "Number required"),
-      efgrid: z.number().min(0, "Number required"),
-    }),
-    maximumEnergySuppliedByAlternative: z.object({
-      capmax: z.number().min(0, "Number required"),
-      tmax: z.number().min(0, "Number required"),
-    }),
-    historicEnergySuppliedByPriorPlant: z.object({
-      qy1: z.number().min(0, "Number required"),
-      qy2: z.number().min(0, "Number required"),
-      qy3: z.number().min(0, "Number required"),
-    }),
-    baselineEmissionFactor: z.array(
-      z.object({
-        name: z.string(),
-        ncv_bsl: z.number().min(0, "Number required"),
-        fc_pj: z.number().min(0, "Number required"),
-        ncv_pj: z.number().min(0, "Number required"),
-        ef_co2_ff: z.number().min(0, "Number required"),
-        q_bsl: z.number().min(0, "Number required"),
-        e_bsl: z.number().min(0, "Number required"),
-        e_pj: z.number().min(0, "Number required"),
-      })
-    ),
-  });
-
-  const defaultValues: ProvidingElectricityFormFields = {
-    annualEnergyOutputOfProjectInstallation: {
-      qkj: 0,
-      efgrid: 0,
-      unit: "tCO2/Mwh",
-    },
-    maximumEnergySuppliedByAlternative: {
-      capmax: 0,
-      tmax: 0,
-    },
-    historicEnergySuppliedByPriorPlant: {
-      qy1: 0,
-      qy2: 0,
-      qy3: 0,
-    },
-    baselineEmissionFactor: [
-      {
-        name: "",
-        ncv_bsl: 0,
-        fc_pj: 0,
-        ncv_pj: 0,
-        ef_co2_ff: 0,
-        q_bsl: 0,
-        e_bsl: 0,
-        e_pj: 0,
-      },
-      {
-        name: "",
-        ncv_bsl: 0,
-        fc_pj: 0,
-        ncv_pj: 0,
-        ef_co2_ff: 0,
-        q_bsl: 0,
-        e_bsl: 0,
-        e_pj: 0,
-      },
-    ],
-  };
-
   const formMethods = useForm<ProvidingElectricityFormFields>({
     defaultValues,
     resolver: zodResolver(schema),
+    mode: "onSubmit",
   });
+
+  const {
+    formState: { errors },
+  } = formMethods;
+
   const addEmissionFactorItem = () => {
     setEmissionFactorItems((prev) => [
       ...prev,
       {
         title: `Fuel ${prev.length + 1}`,
-        content: <FuelForm prefix={`baselineEmissionFactor[${prev.length}`} />,
+        content: <FuelForm prefix={`baselineEmissionFactor[${prev.length}]`} />,
       },
     ]);
   };
@@ -161,8 +173,10 @@ const ProvidingElectricityBaseline = () => {
             }
             id="qkj"
             {...formMethods.register(
-              "annualEnergyOutputOfProjectInstallation.qkj"
+              "annualEnergyOutputOfProjectInstallation.qkj",
+              { valueAsNumber: true }
             )}
+            error={errors.annualEnergyOutputOfProjectInstallation?.qkj}
           />
           <InputWithLabel
             type="number"
@@ -173,15 +187,18 @@ const ProvidingElectricityBaseline = () => {
             }
             id="efgrid"
             {...formMethods.register(
-              "annualEnergyOutputOfProjectInstallation.efgrid"
+              "annualEnergyOutputOfProjectInstallation.efgrid",
+              { valueAsNumber: true }
             )}
+            error={errors.annualEnergyOutputOfProjectInstallation?.efgrid}
           />
 
           <Select
             options={[{ label: "tCO2/Mwh", value: "tCO2/Mwh" }]}
             className="w-40"
             {...formMethods.register(
-              "annualEnergyOutputOfProjectInstallation.unit"
+              "annualEnergyOutputOfProjectInstallation.unit",
+              { valueAsNumber: true }
             )}
           />
         </div>
@@ -201,8 +218,10 @@ const ProvidingElectricityBaseline = () => {
             id="capmax"
             endPlaceholder="MW"
             {...formMethods.register(
-              "maximumEnergySuppliedByAlternative.capmax"
+              "maximumEnergySuppliedByAlternative.capmax",
+              { valueAsNumber: true }
             )}
+            error={errors.maximumEnergySuppliedByAlternative?.capmax}
           />
           <InputWithLabel
             type="number"
@@ -213,9 +232,11 @@ const ProvidingElectricityBaseline = () => {
             }
             id="efalt"
             endPlaceholder="hours"
-            {...formMethods.register("maximumEnergySuppliedByAlternative.tmax")}
+            {...formMethods.register(
+              "maximumEnergySuppliedByAlternative.tmax",
+              { valueAsNumber: true }
+            )}
           />
-          <div></div>
         </div>
       ),
     },
@@ -232,7 +253,10 @@ const ProvidingElectricityBaseline = () => {
             }
             id="qy1"
             endPlaceholder="MWh"
-            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy1")}
+            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy1", {
+              valueAsNumber: true,
+            })}
+            error={errors.historicEnergySuppliedByPriorPlant?.qy1}
           />
           <InputWithLabel
             label={
@@ -243,7 +267,10 @@ const ProvidingElectricityBaseline = () => {
             id="qy2"
             type="number"
             endPlaceholder="MWh"
-            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy2")}
+            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy2", {
+              valueAsNumber: true,
+            })}
+            error={errors.historicEnergySuppliedByPriorPlant?.qy2}
           />
           <InputWithLabel
             label={
@@ -254,7 +281,10 @@ const ProvidingElectricityBaseline = () => {
             id="qy3"
             endPlaceholder="MWh"
             type="number"
-            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy3")}
+            {...formMethods.register("historicEnergySuppliedByPriorPlant.qy3", {
+              valueAsNumber: true,
+            })}
+            error={errors.historicEnergySuppliedByPriorPlant?.qy3}
           />
         </div>
       ),
@@ -281,31 +311,48 @@ const ProvidingElectricityBaseline = () => {
     console.log(data);
     baselineMutation.mutate(data); //uncomment this when adding the Save button
   };
+  const navigate = useNavigate();
 
   const validateAndProceed = async () => {
     // Check if the currentStep index exists in the steps array to avoid indexing errors
     if (currentStep < tabs.length) {
-      const isValid = await formMethods.trigger(tabs[currentStep]);
+      const isValid = await formMethods.trigger();
 
       if (isValid) {
+        navigate(-1);
+        toast.success("Data is valid");
         // If the current step is valid, proceed to the next step or handle form submission
-        if (currentStep < tabs.length - 1) {
-          setCurrentStep(currentStep + 1); // Move to the next step
-        } else {
-          // This is the final step, proceed with form submission
-          //formMethods.handleSubmit(onSubmit)(); TODO: Uncomment this when adding the Save button
-        }
+        // if (currentStep < tabs.length - 1) {
+        //   setCurrentStep(currentStep + 1); // Move to the next step
+        //     } else {
+        //       // This is the final step, proceed with form submission
+        //       //formMethods.handleSubmit(onSubmit)(); TODO: Uncomment this when adding the Save button
+        //     }
+        //   }
+        // } else {
+        //   console.warn("Step index out of bounds");
+        // }
+      } else {
+        //const errorFields = Object.keys(formMethods.formState.errors);
+        toast.error(`Please fill in all the required fields`);
       }
-    } else {
-      console.warn("Step index out of bounds");
     }
   };
+
+  // const isPartValid = () => {
+  //   return (
+  //     formMethods.formState.errors[tabs[openTab]] === undefined &&
+  //     !formMethods.formState.touchedFields[tabs[openTab]]
+  //   );
+  // };
 
   return (
     <FormProvider {...formMethods}>
       <form
         className="flex w-full px-4 md:px-8 lg:px-16 mx-auto flex-col lg:flex-row"
-        // onSubmit={formMethods.handleSubmit(onSubmit)}
+        // onSubmit={formMethods.handleSubmit((data, event) =>
+        //   event?.preventDefault()
+        // )}
       >
         <div className="flex w-1/4 flex-col gap-20 ">
           <div className="-ml-4">
@@ -325,7 +372,7 @@ const ProvidingElectricityBaseline = () => {
           <PrimaryButton
             className={` 
                w-40 mt-auto ml-8`}
-            type="submit"
+            onClick={validateAndProceed}
             disabled={baselineMutation.isPending}
           >
             {baselineMutation.isPending ? "Updating..." : "Validate"}
