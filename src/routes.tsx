@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import Root from "./components/Root";
+import ContactPage from "./pages/Contact";
 import ErrorPage from "./pages/ErrorPage";
+import ProfilePage from "./pages/ProfilePage";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import DashboardPage from "./pages/dashboard/Dashboard";
@@ -21,8 +23,8 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     element: <Root />,
     children: [
-      { path: "profile", element: <div>Profile</div> },
-      { path: "contact", element: <div>Contact</div> },
+      { path: "profile", element: <ProfilePage /> },
+      { path: "contact", element: <ContactPage /> },
       {
         path: "projects",
         element: (
