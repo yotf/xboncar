@@ -1,6 +1,8 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { ProjectType, ProjectTypeShorthand } from "../../types";
 import CalculationCard from "./CalculationCard";
 import SectionCard from "./SectionCard";
@@ -58,6 +60,24 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
               isSelected={selectedCard === calculation.title}
               onClick={() => handleClick(calculation.title)}
               key={calculation.title}
+              onDelete={() => {
+                Swal.fire({
+                  title: "Delete estimation?",
+                  text: "Deletion is permanent",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#C1F48F",
+                  cancelButtonColor: "#3d4451",
+                  confirmButtonText: "Yes, delete it!",
+                  customClass: { confirmButton: "sweet-confirm-button" },
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    toast.success("Estimation deleted", {
+                      icon: <TrashIcon className="w-6 h-6" />,
+                    });
+                  }
+                });
+              }}
             />
           ))}
 
@@ -67,7 +87,7 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
                 `./${linkMapping[title]}/${ProjectTypeShorthand[projectType]}`
               )
             }
-            className="flex  transition-all items-center hover:bg-carbonx-light-green justify-center w-28 h-24 p-4 m-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer"
+            className="flex  transition-all items-center hover:bg-carbonx-light-green  justify-center w-28 h-24 p-4 m-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer"
           >
             <div className=" transition-all">
               <PlusIcon className="h-6 w-6" />
