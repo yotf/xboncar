@@ -26,7 +26,7 @@ const CalculationCard: React.FC<CalculationCardProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`relative flex flex-col items-center justify-center cursor-pointer p-4 m-2 ${
+      className={`relative flex flex-col items-center justify-center cursor-pointer min-w-[112px] p-4 m-2 ${
         isSelected
           ? "bg-carbonx-green"
           : "hover:bg-carbonx-light-green transition-all"

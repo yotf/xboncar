@@ -50,9 +50,9 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
   }, [calculations]);
 
   return (
-    <SectionCard title={title} className="w-[452px]">
-      <div className="flex justify-center items-center space-x-4 p-4 ">
-        <div className="flex flex-wrap justify-around items-start w-full">
+    <SectionCard title={title} className="w-[452px]  ">
+      <div className="flex justify-center items-center space-x-4 p-4  ">
+        <div className="flex  items-start w-full  overflow-x-auto">
           {calculations.map((calculation) => (
             <CalculationCard
               title={calculation.title}
@@ -62,7 +62,7 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
               key={calculation.title}
               onDelete={() => {
                 Swal.fire({
-                  title: "Delete estimation?",
+                  title: `Delete ${calculation.title}?`,
                   text: "Deletion is permanent",
                   icon: "warning",
                   showCancelButton: true,
@@ -87,7 +87,7 @@ const EstimateSection: React.FC<EstimateSectionProps> = ({
                 `./${linkMapping[title]}/${ProjectTypeShorthand[projectType]}`
               )
             }
-            className="flex  transition-all items-center hover:bg-carbonx-light-green  justify-center w-28 h-24 p-4 m-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer"
+            className="flex  transition-all min-w-[112px] items-center hover:bg-carbonx-light-green  justify-center w-28 h-24 p-4 m-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer"
           >
             <div className=" transition-all">
               <PlusIcon className="h-6 w-6" />

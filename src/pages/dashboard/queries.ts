@@ -22,6 +22,10 @@ export const projectMockData: ProjectData[] = [
         title: "Baseline 2",
         calculation: 800,
       },
+      {
+        title: "Baseline 3",
+        calculation: 700,
+      },
     ],
     projectEstimates: [
       {
