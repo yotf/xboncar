@@ -83,7 +83,7 @@ const TimelinePage = () => {
   // End of toggling document completion logic
   const allDocumentGroupsCompleted =
     currentStepData &&
-    completedDocumentGroups.size >= currentStepData.documentGroups.length;
+    completedDocumentGroups.size === currentStepData.documentGroups.length;
   useEffect(() => {
     setCurrentStep(stagesEnum.indexOf(projectData?.stage!));
   }, [projectData?.stage]);
@@ -197,6 +197,13 @@ const TimelinePage = () => {
   //TODO need to put initial data if there is no data
 
   const deleteDocumentGroup = (groupId: number) => {
+    setCompletedDocumentGroups((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(groupId)) {
+        newSet.delete(groupId);
+      }
+      return newSet;
+    });
     setCurrentStepData((prev) => {
       return {
         ...prev,
