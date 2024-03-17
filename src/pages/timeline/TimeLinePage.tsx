@@ -1,6 +1,7 @@
 import autoAnimate from "@formkit/auto-animate";
 import {
   InformationCircleIcon,
+  PencilSquareIcon,
   PlusCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -9,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import BackButton from "../../components/atoms/BackButton";
+import CustomInput from "../../components/atoms/CustomInput";
 import PrimaryButton from "../../components/atoms/PrimaryButton";
 import { DropZoneDocument, TimelineItem, stagesEnum } from "../../types";
 import { useProjectData } from "../dashboard/queries";
@@ -33,8 +35,55 @@ const TimelinePage = () => {
 
   const [validateDisabled, setValidateDisabled] = useState<boolean>(false);
 
-  debugger;
+  /// Editing group name logic
 
+  const [editingGroupId, setEditingGroupId] = useState<number | null>(null); // Step 1
+
+  const toggleEditGroupName = (groupId: number) => {
+    // Step 2
+    setEditingGroupId(editingGroupId === groupId ? null : groupId);
+  };
+
+  const handleGroupNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    groupId: number
+  ) => {
+    // Step 3
+    const updatedName = e.target.value;
+    setCurrentStepData((prev: TimelineItem | null) => ({
+      ...prev!,
+      documentGroups: prev!.documentGroups.map((group) =>
+        group.id === groupId ? { ...group, name: updatedName } : group
+      ),
+    }));
+  };
+
+  // End of editing group name logic
+
+  // Toggling document completion logic
+  const [completedDocumentGroups, setCompletedDocumentGroups] = useState<
+    Set<number>
+  >(new Set());
+
+  useEffect(() => {
+    setCompletedDocumentGroups(new Set());
+  }, [currentStep]);
+
+  const toggleDocumentGroupCompletion = (groupId: number) => {
+    setCompletedDocumentGroups((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(groupId)) {
+        newSet.delete(groupId);
+      } else {
+        newSet.add(groupId);
+      }
+      return newSet;
+    });
+  };
+  // End of toggling document completion logic
+  const allDocumentGroupsCompleted =
+    currentStepData &&
+    completedDocumentGroups.size === currentStepData.documentGroups.length;
   useEffect(() => {
     setCurrentStep(stagesEnum.indexOf(projectData?.stage!));
   }, [projectData?.stage]);
@@ -226,26 +275,49 @@ const TimelinePage = () => {
               currentStepData.documentGroups.map((group, index) => (
                 <div
                   key={index}
-                  className=" flex justify-between  first:border-none border-t-2 border-gray-300 pt-2 cursor-pointer"
-                  onClick={() => setActiveDocumentGroup(index)}
+                  className="flex justify-between items-center first:border-none border-t-2 border-gray-300 pt-2 group"
                 >
-                  <p
-                    className={`transition-all duration-500 ${
-                      index === activeDocumentGroup
-                        ? "text-carbonx-dark-green font-semibold"
-                        : ""
-                    }`}
-                  >
-                    {group.name}
-                  </p>
+                  {editingGroupId === group.id ? (
+                    <CustomInput
+                      type="text"
+                      value={group.name}
+                      onChange={(e) => handleGroupNameChange(e, group.id)}
+                      onBlur={() => setEditingGroupId(null)}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && setEditingGroupId(null)
+                      }
+                      autoFocus
+                      className="input-class" // Style your input
+                    />
+                  ) : (
+                    <>
+                      <p
+                        className={`transition-all duration-500 cursor-pointer ${
+                          index === activeDocumentGroup
+                            ? "text-carbonx-dark-green font-semibold"
+                            : ""
+                        }`}
+                        onClick={() => setActiveDocumentGroup(index)} // Adjust the click handler for selecting the group
+                      >
+                        {group.name}
+                      </p>
+                      <button
+                        onClick={() => toggleEditGroupName(group.id)} // Separate handler for toggling edit mode
+                        className="ml-4 hidden group-hover:block"
+                      >
+                        <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+                      </button>
+                    </>
+                  )}
                   <div
-                    className={`w-6 h-6 rounded-full border flex items-center ml-auto justify-center  ${
-                      index === activeDocumentGroup
+                    onClick={() => toggleDocumentGroupCompletion(group.id)}
+                    className={`w-6 h-6 rounded-full border flex items-center ml-auto justify-center cursor-pointer ${
+                      completedDocumentGroups.has(group.id)
                         ? ` border-carbonx-green border-[3px]`
                         : `border-gray-200 border-[3px]`
                     } `}
                   >
-                    {index === activeDocumentGroup && (
+                    {completedDocumentGroups.has(group.id) && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="17"
@@ -288,13 +360,22 @@ const TimelinePage = () => {
           </div>
         </div>
         <div className="flex items-center mt-auto">
-          <PrimaryButton
-            className="w-[169px] h-[63px]"
-            onClick={completeCurrentStep}
-            disabled={validateDisabled}
+          <div
+            className={` ${
+              !allDocumentGroupsCompleted && !validateDisabled
+                ? "tooltip tooltip-primary"
+                : ""
+            }`}
+            data-tip="You must mark all document groups as completed "
           >
-            <p className="text-lg"> Validate</p>
-          </PrimaryButton>
+            <PrimaryButton
+              className="w-[169px] h-[63px]"
+              onClick={completeCurrentStep}
+              disabled={validateDisabled || !allDocumentGroupsCompleted}
+            >
+              <p className="text-lg"> Validate</p>
+            </PrimaryButton>
+          </div>
         </div>
       </div>
     </div>
