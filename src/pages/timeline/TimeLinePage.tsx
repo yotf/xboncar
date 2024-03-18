@@ -88,7 +88,7 @@ const TimelinePage = () => {
     setCurrentStep(stagesEnum.indexOf(projectData?.stage!));
   }, [projectData?.stage]);
 
-  const [activeDocumentGroup, setActiveDocumentGroup] = useState<number>(0);
+  const [activeDocumentGroup, setActiveDocumentGroup] = useState<number>();
 
   const { data: stepDataRemote } = useTimelineStepData(
     projectId!,
@@ -219,8 +219,8 @@ const TimelinePage = () => {
       setCurrentStepData((prev) => {
         return {
           ...prev,
-          documentGroups: prev.documentGroups.map((group, index) => {
-            if (index === activeDocumentGroup) {
+          documentGroups: prev.documentGroups.map((group) => {
+            if (group.id === activeDocumentGroup) {
               if (group.documents.length >= 6) {
                 toast.error(
                   "You cannot upload more than 6 documents. Please limit your upload to 6 documents.",
@@ -240,15 +240,15 @@ const TimelinePage = () => {
         };
       });
     },
-    [currentStep]
+    [currentStep, activeDocumentGroup]
   );
 
   const onRemoveDocument = (doc: DropZoneDocument) => {
     setCurrentStepData((prev) => {
       return {
         ...prev,
-        documentGroups: prev?.documentGroups.map((group, index) => {
-          if (index === activeDocumentGroup) {
+        documentGroups: prev?.documentGroups.map((group) => {
+          if (group.id === activeDocumentGroup) {
             return {
               ...group,
               documents: group.documents.filter((document) => document !== doc),
@@ -261,8 +261,8 @@ const TimelinePage = () => {
   };
 
   useEffect(() => {
-    setActiveDocumentGroup(0);
-  }, [currentStep]);
+    setActiveDocumentGroup(currentStepData?.documentGroups[0].id);
+  }, [currentStep, currentStepData?.documentGroups[0].id]);
 
   return (
     <div className="mx-auto  container ">
@@ -300,11 +300,13 @@ const TimelinePage = () => {
                     <>
                       <p
                         className={`transition-all duration-500 cursor-pointer ${
-                          index === activeDocumentGroup
+                          group?.id === activeDocumentGroup
                             ? "text-carbonx-dark-green font-semibold"
                             : ""
                         }`}
-                        onClick={() => setActiveDocumentGroup(index)} // Adjust the click handler for selecting the group
+                        onClick={() => {
+                          setActiveDocumentGroup(group?.id);
+                        }} // Adjust the click handler for selecting the group
                       >
                         {group.name}
                       </p>
@@ -362,8 +364,8 @@ const TimelinePage = () => {
               onDrop={onDrop}
               onRemoveDocument={onRemoveDocument}
               documents={
-                currentStepData?.documentGroups[activeDocumentGroup]
-                  ?.documents || []
+                currentStepData?.documentGroups?.[activeDocumentGroup || 0]
+                  .documents
               }
             />
           </div>
